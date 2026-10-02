@@ -166,8 +166,35 @@ def update(table: str, row_id: int, values: dict, conn=None) -> None:
 
 # --------------------------------------------------------------------------- setup
 
+class DatabaseUnreachable(RuntimeError):
+    pass
+
+
+def check_connection() -> None:
+    """One direct connection attempt, so a bad DATABASE_URL fails with the real reason
+    (wrong password, unknown host...) instead of a generic pool timeout. Never logs the URL."""
+    if not settings.use_postgres:
+        return
+    import psycopg
+
+    try:
+        psycopg.connect(settings.database_url, connect_timeout=15, prepare_threshold=None).close()
+    except Exception as e:  # noqa: BLE001
+        reason = str(e).strip().splitlines()[-1] if str(e).strip() else type(e).__name__
+        hint = ""
+        low = reason.lower()
+        if "password authentication failed" in low:
+            hint = " -> the password in DATABASE_URL is wrong (no [brackets]; letters and digits only)."
+        elif "tenant or user not found" in low:
+            hint = " -> the username must be postgres.<project-ref> and the host must be the pooler host."
+        elif "could not translate host name" in low or "name or service not known" in low:
+            hint = " -> the host name in DATABASE_URL is mistyped."
+        raise DatabaseUnreachable(f"Cannot connect to the database: {reason}{hint}") from None
+
+
 def init_db(reset: bool = False) -> None:
     if settings.use_postgres:
+        check_connection()
         schema = (ROOT / "db" / "schema.sql").read_text(encoding="utf-8")
         with connect() as c:
             invalidate_company_cache()
