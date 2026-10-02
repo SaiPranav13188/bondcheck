@@ -13,7 +13,9 @@ import json
 import logging
 import queue
 import re
+import functools
 import threading
+import time
 from collections import Counter
 from contextlib import asynccontextmanager
 from datetime import date, timedelta
@@ -66,6 +68,34 @@ SAMPLES_DIR = ROOT / "data" / "samples"
 
 # --------------------------------------------------------------------------- helpers
 
+_cache: dict = {}
+_cache_lock = threading.Lock()
+
+
+def cached(ttl: float = 30):
+    """Tiny TTL cache for read endpoints; cleared whenever an upload or moderator action changes data."""
+    def deco(fn):
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            key = (fn.__name__, args, tuple(sorted(kwargs.items())))
+            now = time.monotonic()
+            with _cache_lock:
+                hit = _cache.get(key)
+            if hit and now - hit[0] < ttl:
+                return hit[1]
+            value = fn(*args, **kwargs)
+            with _cache_lock:
+                _cache[key] = (now, value)
+            return value
+        return wrapper
+    return deco
+
+
+def clear_cache() -> None:
+    with _cache_lock:
+        _cache.clear()
+
+
 def ndjson(ctx: RunContext) -> Iterator[str]:
     while True:
         try:
@@ -75,6 +105,8 @@ def ndjson(ctx: RunContext) -> Iterator[str]:
             return
         if ev is None:
             return
+        if ev.get("kind") == "result":
+            clear_cache()  # the run may have added records
         yield json.dumps(ev, default=str, ensure_ascii=False) + "\n"
 
 
@@ -174,6 +206,7 @@ def health() -> dict:
 
 
 @app.get("/stats")
+@cached(30)
 def stats() -> dict:
     recs = db.query("SELECT company_id, has_bond, penalty_amount, bond_months FROM offer_records "
                     "WHERE status = 'verified' AND source_type = 'upload'")
@@ -201,6 +234,7 @@ def stats() -> dict:
 
 
 @app.get("/companies")
+@cached(30)
 def companies(q: str = "", bond: str = Query("any", pattern="^(any|yes|no)$"),
               sort: str = Query("risk", pattern="^(risk|name|uploads|penalty|drive)$")) -> list[dict]:
     cos = db.query("SELECT * FROM companies ORDER BY name")
@@ -238,6 +272,7 @@ def companies(q: str = "", bond: str = Query("any", pattern="^(any|yes|no)$"),
 
 
 @app.get("/company/{company_id}")
+@cached(30)
 def company(company_id: int) -> dict:
     try:
         summary = db.get_company_summary(company_id)
@@ -361,14 +396,15 @@ def record(record_id: int) -> dict:
 
 
 @app.get("/drives")
+@cached(30)
 def drives(days: int = 60) -> list[dict]:
     rows = db.query("SELECT d.*, c.name FROM placement_drives d JOIN companies c ON c.id = d.company_id "
                     "WHERE d.drive_date >= ? AND d.drive_date <= ? ORDER BY d.drive_date",
                     [date.today().isoformat(), (date.today() + timedelta(days=days)).isoformat()])
+    cov = monitor.coverage_all(date.today().year)
     for r in rows:
         r["days_left"] = (date.fromisoformat(str(r["drive_date"])[:10]) - date.today()).days
-        cov = monitor.coverage(r["company_id"], date.today().year)
-        r["coverage"] = cov
+        r["coverage"] = cov[r["company_id"]]
     return rows
 
 
@@ -389,6 +425,7 @@ def subscribe(body: SubscribeBody) -> dict:
     email = body.email.lower()
     user = db.query_one("SELECT id FROM users WHERE email = ?", [email])
     uid = user["id"] if user else db.insert("users", {"email": email, "alert_all": body.alert_all})
+    clear_cache()
     if user:
         db.update("users", uid, {"alert_all": body.alert_all})
     valid = {c["id"] for c in db.query("SELECT id FROM companies")}
@@ -460,6 +497,7 @@ class QueueAction(BaseModel):
 
 @app.post("/admin/queue/{item_id}", dependencies=[Depends(require_admin)])
 def admin_queue_action(item_id: int, body: QueueAction) -> dict:
+    clear_cache()
     try:
         return db.resolve_queue_item(item_id, body.action, body.merge_into, body.note)
     except ValueError as e:
@@ -478,6 +516,7 @@ class ConflictAction(BaseModel):
 
 @app.post("/admin/conflicts/{conflict_id}/resolve", dependencies=[Depends(require_admin)])
 def admin_resolve_conflict(conflict_id: int, body: ConflictAction) -> dict:
+    clear_cache()
     try:
         return db.resolve_conflict(conflict_id, body.keep_value)
     except ValueError as e:

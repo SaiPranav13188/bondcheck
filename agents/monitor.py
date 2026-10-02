@@ -27,21 +27,30 @@ def get_upcoming_drives(days: int = 30) -> list[dict]:
         [today.isoformat(), (today + timedelta(days=days)).isoformat()])
 
 
+def coverage_all(batch: int) -> dict[int, dict]:
+    """Coverage for every company in two queries: {company_id: {gap, latest_batch, uploads, open_conflicts}}."""
+    uploads = {r["company_id"]: r for r in db.run_readonly_sql(
+        "SELECT company_id, MAX(batch_year) AS latest, COUNT(*) AS n FROM offer_records "
+        "WHERE status = 'verified' AND source_type = 'upload' GROUP BY company_id")}
+    conflicts = {r["company_id"]: r["n"] for r in db.run_readonly_sql(
+        "SELECT company_id, COUNT(*) AS n FROM conflicts WHERE status = 'open' GROUP BY company_id")}
+
+    class _All(dict):
+        def __missing__(self, cid):
+            return _one(cid)
+
+    def _one(cid: int) -> dict:
+        u = uploads.get(cid)
+        latest = u["latest"] if u else None
+        n_conf = conflicts.get(cid, 0)
+        gap = "no_data" if not u else "stale" if latest < batch else "conflict" if n_conf else None
+        return {"gap": gap, "latest_batch": latest, "uploads": int(u["n"]) if u else 0, "open_conflicts": int(n_conf)}
+
+    return _All()
+
+
 def coverage(company_id: int, batch: int) -> dict:
-    rows = db.run_readonly_sql(
-        "SELECT batch_year, COUNT(*) AS n FROM offer_records WHERE company_id = ? AND status = 'verified' "
-        "AND source_type = 'upload' GROUP BY batch_year ORDER BY batch_year DESC", [company_id])
-    conflicts = db.run_readonly_sql("SELECT id FROM conflicts WHERE company_id = ? AND status = 'open'", [company_id])
-    latest = rows[0]["batch_year"] if rows else None
-    if not rows:
-        gap = "no_data"
-    elif latest < batch:
-        gap = "stale"
-    elif conflicts:
-        gap = "conflict"
-    else:
-        gap = None
-    return {"gap": gap, "latest_batch": latest, "uploads": sum(r["n"] for r in rows), "open_conflicts": len(conflicts)}
+    return coverage_all(batch)[company_id]
 
 
 EXTRACT_SCHEMA = {
@@ -75,11 +84,12 @@ def run(ctx: RunContext, days: int = 30) -> dict:
         ctx.emit(A, "tool", f"get_upcoming_drives: {len(drives)} drive(s) in the next {days} days")
         summary["drives"] = len(drives)
         seen: set[int] = set()
+        cov_all = coverage_all(batch)
         for d in drives:
             if d["company_id"] in seen:
                 continue
             seen.add(d["company_id"])
-            cov = coverage(d["company_id"], batch)
+            cov = cov_all[d["company_id"]]
             if not cov["gap"]:
                 ctx.emit(A, "check", f"{d['name']}: covered ({cov['uploads']} verified uploads, batch {cov['latest_batch']})")
                 continue

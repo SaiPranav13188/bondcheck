@@ -57,7 +57,7 @@ def _pg_pool(url: str):
 
             _pools[url] = ConnectionPool(
                 url, min_size=1, max_size=int(os.getenv("DB_POOL_SIZE", "5")), timeout=30,
-                max_idle=300, check=ConnectionPool.check_connection, open=True,
+                max_idle=120, max_lifetime=900, open=True,
                 # prepare_threshold=None: Supabase/Neon poolers (PgBouncer) don't support prepared statements.
                 kwargs={"row_factory": dict_row, "autocommit": False, "prepare_threshold": None, "connect_timeout": 15},
             )
@@ -123,8 +123,14 @@ def query(q: str, params: Iterable = (), conn=None) -> list[dict]:
 
     if conn is not None:
         return run(conn)
-    with connect() as c:
-        return run(c)
+    try:
+        with connect() as c:
+            return run(c)
+    except Exception as e:  # a pooled connection the server closed while idle: retry once on a fresh one
+        if not (settings.use_postgres and type(e).__name__ in {"OperationalError", "InterfaceError"}):
+            raise
+        with connect() as c:
+            return run(c)
 
 
 def query_one(q: str, params: Iterable = (), conn=None) -> dict | None:
@@ -366,8 +372,7 @@ def run_readonly_sql(sql: str, params: Iterable = (), limit: int | None = None) 
     if settings.use_postgres:
         with _pg_pool(settings.readonly_database_url or settings.database_url).connection() as conn:
             try:
-                conn.execute("SET TRANSACTION READ ONLY")
-                conn.execute(f"SET LOCAL statement_timeout = {settings.sql_timeout_ms}")
+                conn.execute(f"SET TRANSACTION READ ONLY; SET LOCAL statement_timeout = {settings.sql_timeout_ms}")
                 rows = conn.execute(_sql(wrapped), tuple(params)).fetchall()
                 return [_decode(r) for r in rows]
             finally:

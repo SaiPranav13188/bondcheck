@@ -4,6 +4,7 @@ services:
     name: bondcheck-api
     runtime: docker
     plan: free
+    region: singapore            # same region as the Supabase database (ap-southeast-1)
     dockerfilePath: ./Dockerfile
     healthCheckPath: /health
     envVars:
