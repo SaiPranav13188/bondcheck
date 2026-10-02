@@ -6,6 +6,7 @@ with `?` placeholders and translated for psycopg.
 from __future__ import annotations
 
 import json
+import os
 import re
 import sqlite3
 import threading
@@ -42,23 +43,38 @@ def _sqlite_connect(readonly: bool = False) -> sqlite3.Connection:
     return conn
 
 
-def _pg_connect(url: str):
-    import psycopg
-    from psycopg.rows import dict_row
+_pools: dict[str, object] = {}
+_pools_lock = threading.Lock()
 
-    # prepare_threshold=None: Supabase/Neon poolers (PgBouncer) don't support prepared statements.
-    return psycopg.connect(url, row_factory=dict_row, autocommit=False, prepare_threshold=None, connect_timeout=15)
+
+def _pg_pool(url: str):
+    """One small connection pool per URL. Opening a TLS connection to a hosted database costs
+    several round trips, so connections are reused instead of opened per query."""
+    with _pools_lock:
+        if url not in _pools:
+            from psycopg.rows import dict_row
+            from psycopg_pool import ConnectionPool
+
+            _pools[url] = ConnectionPool(
+                url, min_size=1, max_size=int(os.getenv("DB_POOL_SIZE", "5")), timeout=30,
+                max_idle=300, check=ConnectionPool.check_connection, open=True,
+                # prepare_threshold=None: Supabase/Neon poolers (PgBouncer) don't support prepared statements.
+                kwargs={"row_factory": dict_row, "autocommit": False, "prepare_threshold": None, "connect_timeout": 15},
+            )
+        return _pools[url]
 
 
 @contextmanager
 def connect():
     """Read-write connection used by the agents' own tools (never by text-to-SQL)."""
     if settings.use_postgres:
-        conn = _pg_connect(settings.database_url)
-    else:
-        conn = _sqlite_connect()
+        # The pool commits on success and rolls back on an exception.
+        with _pg_pool(settings.database_url).connection() as conn:
+            yield conn
+        return
+    conn = _sqlite_connect()
     try:
-        with _lock if not settings.use_postgres else _nullcontext():
+        with _lock:
             yield conn
             conn.commit()
     except Exception:
@@ -66,11 +82,6 @@ def connect():
         raise
     finally:
         conn.close()
-
-
-@contextmanager
-def _nullcontext():
-    yield
 
 
 def _sql(q: str) -> str:
@@ -153,11 +164,13 @@ def init_db(reset: bool = False) -> None:
     if settings.use_postgres:
         schema = (ROOT / "db" / "schema.sql").read_text(encoding="utf-8")
         with connect() as c:
+            invalidate_company_cache()
             if reset:  # only BondCheck's own objects; never the whole schema (Supabase keeps grants there)
                 c.execute("DROP VIEW IF EXISTS company_summary")
                 c.execute("DROP TABLE IF EXISTS " + ", ".join(APP_TABLES) + " CASCADE")
             c.execute(schema)
     else:
+        invalidate_company_cache()
         if reset and settings.sqlite_path.exists():
             settings.sqlite_path.unlink()
         schema = (ROOT / "db" / "schema_sqlite.sql").read_text(encoding="utf-8")
@@ -189,7 +202,7 @@ def find_company(name: str, limit: int = 3) -> list[dict]:
     """Fuzzy-match a company name against names and aliases. Returns [{id, name, score}]."""
     if not name:
         return []
-    companies = query("SELECT id, name, normalized_name, aliases FROM companies")
+    companies = _company_list()
     choices: dict[str, int] = {}
     for c in companies:
         choices[c["normalized_name"]] = c["id"]
@@ -210,11 +223,27 @@ def find_company(name: str, limit: int = 3) -> list[dict]:
     return [{"id": cid, "name": by_id[cid]["name"], "score": round(s, 1)} for cid, s in ranked]
 
 
+_company_cache: dict = {"at": 0.0, "rows": None}
+
+
+def _company_list() -> list[dict]:
+    """Companies for fuzzy matching, cached for a few seconds (the Q&A agent matches many n-grams)."""
+    if _company_cache["rows"] is None or time.monotonic() - _company_cache["at"] > 30:
+        _company_cache["rows"] = query("SELECT id, name, normalized_name, aliases FROM companies")
+        _company_cache["at"] = time.monotonic()
+    return _company_cache["rows"]
+
+
+def invalidate_company_cache() -> None:
+    _company_cache["rows"] = None
+
+
 def create_company(name: str, conn=None) -> int:
     norm = normalize_company(name)
     existing = query_one("SELECT id FROM companies WHERE normalized_name = ?", [norm], conn)
     if existing:
         return existing["id"]
+    invalidate_company_cache()
     return insert("companies", {"name": name.strip(), "normalized_name": norm, "aliases": [name.strip()]}, conn)
 
 
@@ -224,6 +253,7 @@ def add_alias(company_id: int, alias: str, conn=None) -> None:
     if alias and alias not in aliases:
         aliases.append(alias)
         update("companies", company_id, {"aliases": aliases}, conn)
+        invalidate_company_cache()
 
 
 # --------------------------------------------------------------------------- records
@@ -334,15 +364,14 @@ def run_readonly_sql(sql: str, params: Iterable = (), limit: int | None = None) 
     s = _check_select(sql)
     wrapped = f"SELECT * FROM ({s}) AS q LIMIT {int(limit)}"
     if settings.use_postgres:
-        conn = _pg_connect(settings.readonly_database_url or settings.database_url)
-        try:
-            conn.execute("SET TRANSACTION READ ONLY")
-            conn.execute(f"SET LOCAL statement_timeout = {settings.sql_timeout_ms}")
-            rows = conn.execute(_sql(wrapped), tuple(params)).fetchall()
-            return [_decode(r) for r in rows]
-        finally:
-            conn.rollback()
-            conn.close()
+        with _pg_pool(settings.readonly_database_url or settings.database_url).connection() as conn:
+            try:
+                conn.execute("SET TRANSACTION READ ONLY")
+                conn.execute(f"SET LOCAL statement_timeout = {settings.sql_timeout_ms}")
+                rows = conn.execute(_sql(wrapped), tuple(params)).fetchall()
+                return [_decode(r) for r in rows]
+            finally:
+                conn.rollback()
 
     conn = _sqlite_connect(readonly=True)
     deadline = time.monotonic() + settings.sql_timeout_ms / 1000
@@ -402,6 +431,7 @@ def resolve_queue_item(item_id: int, action: str, merge_into: int | None = None,
                 execute("DELETE FROM subscriptions WHERE company_id = ?", [old["id"]], conn)
                 execute("DELETE FROM data_requests WHERE company_id = ?", [old["id"]], conn)
                 execute("DELETE FROM companies WHERE id = ?", [old["id"]], conn)
+                invalidate_company_cache()
         elif action not in {"approve", "reject", "merge", "dismiss"}:
             raise ValueError("action must be approve, reject, merge or dismiss")
         update("moderation_queue", item_id, {"status": "resolved" if action != "reject" else "rejected",

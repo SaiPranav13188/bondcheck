@@ -74,7 +74,7 @@ def page_images(data: bytes, kind: str, max_pages: int = 6) -> list[bytes]:
     pdf = pdfium.PdfDocument(data)
     out = []
     for i in range(min(len(pdf), max_pages)):
-        pil = pdf[i].render(scale=200 / 72).to_pil()
+        pil = pdf[i].render(scale=150 / 72).to_pil()  # 150 dpi: enough for OCR, ~2x faster than 200
         buf = io.BytesIO()
         pil.save(buf, format="PNG")
         out.append(buf.getvalue())
