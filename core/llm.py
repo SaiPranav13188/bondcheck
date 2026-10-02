@@ -67,6 +67,20 @@ def client():
     return _client
 
 
+def verify_credentials() -> str | None:
+    """Cheap startup check. Returns a reason string if the configured key can't be used."""
+    import anthropic
+
+    try:
+        client().models.list(limit=1)
+        return None
+    except (anthropic.AuthenticationError, anthropic.PermissionDeniedError) as e:
+        return f"Claude API key rejected ({e.status_code})"
+    except anthropic.APIError as e:  # network hiccup etc.: keep Claude mode, calls will retry
+        log.warning("could not verify the Claude API key: %s", e)
+        return None
+
+
 def _request_kwargs(model: str) -> dict:
     """Model-specific request options."""
     kw: dict[str, Any] = {}

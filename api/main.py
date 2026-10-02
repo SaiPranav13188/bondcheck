@@ -37,6 +37,14 @@ log = logging.getLogger("bondcheck.api")
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    if not settings.offline:
+        from core.llm import verify_credentials
+
+        reason = verify_credentials()
+        if reason:  # a bad key would make every agent call fail; run the offline engine instead
+            log.warning("%s: falling back to the offline rule engine", reason)
+            object.__setattr__(settings, "offline", True)
+            object.__setattr__(settings, "offline_reason", reason)
     db.init_db()
     if db.is_empty() and not settings.use_postgres:
         log.info("empty database: seeding demo data through the agent pipeline")
@@ -159,6 +167,7 @@ def company_card(c: dict, recs: list[dict], drives: dict, conflicts: Counter, pu
 @app.get("/health")
 def health() -> dict:
     return {"ok": True, "mode": "offline-rules" if settings.offline else "claude",
+            "note": getattr(settings, "offline_reason", None),
             "models": None if settings.offline else {"fast": settings.fast_model, "strong": settings.strong_model},
             "database": "postgres" if settings.use_postgres else "sqlite",
             "ocr": "tesseract" if settings.tesseract_available else ("claude-vision" if not settings.offline else "none")}
