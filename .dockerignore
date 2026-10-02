@@ -1,0 +1,6 @@
+.venv
+frontend
+data/*.db*
+data/outbox
+__pycache__
+.pytest_cache

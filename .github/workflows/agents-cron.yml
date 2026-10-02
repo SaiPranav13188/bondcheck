@@ -1,0 +1,30 @@
+# Runs the proactive agents daily (alternative to Vercel Cron).
+# Set repository secrets API_URL (your deployed FastAPI base URL) and CRON_SECRET.
+name: proactive-agents
+on:
+  schedule:
+    - cron: "30 2 * * *"   # 08:00 IST: Monitor Agent
+    - cron: "45 2 * * *"   # 08:15 IST: Alert Agent
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Monitor Agent
+        if: github.event.schedule != '45 2 * * *'
+        run: curl -fsS -X POST "$API_URL/cron/monitor" -H "Authorization: Bearer $CRON_SECRET"
+        env: { API_URL: "${{ secrets.API_URL }}", CRON_SECRET: "${{ secrets.CRON_SECRET }}" }
+      - name: Alert Agent
+        if: github.event.schedule != '30 2 * * *'
+        run: curl -fsS -X POST "$API_URL/cron/alerts" -H "Authorization: Bearer $CRON_SECRET"
+        env: { API_URL: "${{ secrets.API_URL }}", CRON_SECRET: "${{ secrets.CRON_SECRET }}" }
+
+  tests:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r requirements.txt && BONDCHECK_OFFLINE=1 pytest -q

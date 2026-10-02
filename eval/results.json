@@ -1,0 +1,1102 @@
+{
+  "generated_at": "2026-10-02 09:51 UTC",
+  "engine": "offline rule engine",
+  "extraction": {
+    "letters": 50,
+    "processed": 45,
+    "skipped_scanned": 5,
+    "accuracy": {
+      "single_pass": 0.8852,
+      "agentic": 0.9963,
+      "agentic_confirmed": 1.0
+    },
+    "hallucinated_fields": {
+      "single_pass": 22,
+      "agentic": 0
+    },
+    "hallucination_rate": {
+      "single_pass": 0.0407,
+      "agentic": 0.0
+    },
+    "errors_by_field": {
+      "single_pass": {
+        "bond_months": 36,
+        "certificates_retained": 12,
+        "ctc_annual": 9,
+        "has_bond": 5
+      },
+      "agentic": {
+        "bond_months": 2
+      }
+    },
+    "uploader_questions": {
+      "total": 2,
+      "letters_with_questions": 2
+    },
+    "privacy": {
+      "pii_items": 335,
+      "leaked_in_redacted_text": 0,
+      "leaked_in_stored_records": 0,
+      "stored_leak_rate": 0.0,
+      "redacted_text_leak_rate": 0.0,
+      "rescan_attempts": {
+        "1": 28,
+        "2": 17
+      }
+    },
+    "cost": {
+      "avg_seconds_per_letter": 0.011,
+      "avg_tokens_per_letter": 0
+    },
+    "per_letter": [
+      {
+        "id": "letter_000",
+        "template": "formal",
+        "tags": [
+          "formal"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.02,
+        "tokens": 0
+      },
+      {
+        "id": "letter_001",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "prorated",
+          "certs_returned",
+          "probation_first"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.013,
+        "tokens": 0
+      },
+      {
+        "id": "letter_002",
+        "template": "table",
+        "tags": [
+          "table",
+          "certs_returned"
+        ],
+        "wrong_single_pass": [
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.009,
+        "tokens": 0
+      },
+      {
+        "id": "letter_003",
+        "template": "annexure",
+        "tags": [
+          "annexure"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_004",
+        "template": "email",
+        "tags": [
+          "email"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [
+          "bond_months"
+        ],
+        "questions": [
+          "bond_months"
+        ],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.015,
+        "tokens": 0
+      },
+      {
+        "id": "letter_005",
+        "template": "formal",
+        "tags": [
+          "formal",
+          "certs_returned"
+        ],
+        "wrong_single_pass": [
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.013,
+        "tokens": 0
+      },
+      {
+        "id": "letter_006",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "prorated",
+          "probation_first"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_007",
+        "skipped": "scanned letter needs OCR (Tesseract or Claude vision)"
+      },
+      {
+        "id": "letter_008",
+        "template": "annexure",
+        "tags": [
+          "annexure",
+          "no_bond"
+        ],
+        "wrong_single_pass": [
+          "has_bond",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.012,
+        "tokens": 0
+      },
+      {
+        "id": "letter_009",
+        "template": "email",
+        "tags": [
+          "email",
+          "prorated"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.007,
+        "tokens": 0
+      },
+      {
+        "id": "letter_010",
+        "template": "formal",
+        "tags": [
+          "formal",
+          "prorated"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_011",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "no_bond",
+          "certs_returned",
+          "probation_first"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "has_bond",
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_012",
+        "template": "table",
+        "tags": [
+          "table",
+          "prorated",
+          "certs_returned"
+        ],
+        "wrong_single_pass": [
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.009,
+        "tokens": 0
+      },
+      {
+        "id": "letter_013",
+        "template": "annexure",
+        "tags": [
+          "annexure",
+          "prorated",
+          "certs_returned",
+          "injection"
+        ],
+        "wrong_single_pass": [
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.012,
+        "tokens": 0
+      },
+      {
+        "id": "letter_014",
+        "template": "email",
+        "tags": [
+          "email",
+          "prorated"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.009,
+        "tokens": 0
+      },
+      {
+        "id": "letter_015",
+        "template": "formal",
+        "tags": [
+          "formal",
+          "prorated"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_016",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "prorated",
+          "probation_first"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.013,
+        "tokens": 0
+      },
+      {
+        "id": "letter_017",
+        "template": "table",
+        "tags": [
+          "table",
+          "prorated"
+        ],
+        "wrong_single_pass": [],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.013,
+        "tokens": 0
+      },
+      {
+        "id": "letter_018",
+        "template": "annexure",
+        "tags": [
+          "annexure",
+          "prorated",
+          "certs_returned"
+        ],
+        "wrong_single_pass": [
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.014,
+        "tokens": 0
+      },
+      {
+        "id": "letter_019",
+        "skipped": "scanned letter needs OCR (Tesseract or Claude vision)"
+      },
+      {
+        "id": "letter_020",
+        "template": "formal",
+        "tags": [
+          "formal",
+          "no_bond"
+        ],
+        "wrong_single_pass": [
+          "has_bond",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.008,
+        "tokens": 0
+      },
+      {
+        "id": "letter_021",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "probation_first"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.014,
+        "tokens": 0
+      },
+      {
+        "id": "letter_022",
+        "template": "table",
+        "tags": [
+          "table",
+          "prorated"
+        ],
+        "wrong_single_pass": [],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.007,
+        "tokens": 0
+      },
+      {
+        "id": "letter_023",
+        "template": "annexure",
+        "tags": [
+          "annexure",
+          "prorated"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_024",
+        "template": "email",
+        "tags": [
+          "email",
+          "prorated",
+          "certs_returned"
+        ],
+        "wrong_single_pass": [
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.011,
+        "tokens": 0
+      },
+      {
+        "id": "letter_025",
+        "template": "formal",
+        "tags": [
+          "formal"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.012,
+        "tokens": 0
+      },
+      {
+        "id": "letter_026",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "probation_first",
+          "injection"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_027",
+        "template": "table",
+        "tags": [
+          "table"
+        ],
+        "wrong_single_pass": [],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.007,
+        "tokens": 0
+      },
+      {
+        "id": "letter_028",
+        "skipped": "scanned letter needs OCR (Tesseract or Claude vision)"
+      },
+      {
+        "id": "letter_029",
+        "template": "email",
+        "tags": [
+          "email"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [
+          "bond_months"
+        ],
+        "questions": [
+          "bond_months"
+        ],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.011,
+        "tokens": 0
+      },
+      {
+        "id": "letter_030",
+        "template": "formal",
+        "tags": [
+          "formal"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_031",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "prorated",
+          "probation_first"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.009,
+        "tokens": 0
+      },
+      {
+        "id": "letter_032",
+        "template": "table",
+        "tags": [
+          "table",
+          "prorated",
+          "certs_returned"
+        ],
+        "wrong_single_pass": [
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.008,
+        "tokens": 0
+      },
+      {
+        "id": "letter_033",
+        "template": "annexure",
+        "tags": [
+          "annexure"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.014,
+        "tokens": 0
+      },
+      {
+        "id": "letter_034",
+        "template": "email",
+        "tags": [
+          "email",
+          "no_bond"
+        ],
+        "wrong_single_pass": [
+          "has_bond",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.006,
+        "tokens": 0
+      },
+      {
+        "id": "letter_035",
+        "template": "formal",
+        "tags": [
+          "formal",
+          "prorated"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_036",
+        "skipped": "scanned letter needs OCR (Tesseract or Claude vision)"
+      },
+      {
+        "id": "letter_037",
+        "template": "table",
+        "tags": [
+          "table"
+        ],
+        "wrong_single_pass": [],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.006,
+        "tokens": 0
+      },
+      {
+        "id": "letter_038",
+        "template": "annexure",
+        "tags": [
+          "annexure",
+          "certs_returned",
+          "injection"
+        ],
+        "wrong_single_pass": [
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.018,
+        "tokens": 0
+      },
+      {
+        "id": "letter_039",
+        "template": "email",
+        "tags": [
+          "email",
+          "certs_returned"
+        ],
+        "wrong_single_pass": [
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.015,
+        "tokens": 0
+      },
+      {
+        "id": "letter_040",
+        "template": "formal",
+        "tags": [
+          "formal"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.013,
+        "tokens": 0
+      },
+      {
+        "id": "letter_041",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "probation_first"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.01,
+        "tokens": 0
+      },
+      {
+        "id": "letter_042",
+        "template": "table",
+        "tags": [
+          "table"
+        ],
+        "wrong_single_pass": [],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.009,
+        "tokens": 0
+      },
+      {
+        "id": "letter_043",
+        "template": "annexure",
+        "tags": [
+          "annexure"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.015,
+        "tokens": 0
+      },
+      {
+        "id": "letter_044",
+        "skipped": "scanned letter needs OCR (Tesseract or Claude vision)"
+      },
+      {
+        "id": "letter_045",
+        "template": "formal",
+        "tags": [
+          "formal",
+          "prorated"
+        ],
+        "wrong_single_pass": [
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.008,
+        "tokens": 0
+      },
+      {
+        "id": "letter_046",
+        "template": "tricky",
+        "tags": [
+          "tricky",
+          "prorated",
+          "probation_first",
+          "injection"
+        ],
+        "wrong_single_pass": [
+          "ctc_annual",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.011,
+        "tokens": 0
+      },
+      {
+        "id": "letter_047",
+        "template": "table",
+        "tags": [
+          "table"
+        ],
+        "wrong_single_pass": [],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 1,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.006,
+        "tokens": 0
+      },
+      {
+        "id": "letter_048",
+        "template": "annexure",
+        "tags": [
+          "annexure",
+          "prorated",
+          "certs_returned",
+          "injection"
+        ],
+        "wrong_single_pass": [
+          "bond_months",
+          "certificates_retained"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.011,
+        "tokens": 0
+      },
+      {
+        "id": "letter_049",
+        "template": "email",
+        "tags": [
+          "email",
+          "no_bond"
+        ],
+        "wrong_single_pass": [
+          "has_bond",
+          "bond_months"
+        ],
+        "wrong_agentic": [],
+        "questions": [],
+        "privacy_attempts": 2,
+        "pii_leaked_in_redacted_text": [],
+        "seconds": 0.006,
+        "tokens": 0
+      }
+    ]
+  },
+  "conflicts_qa": {
+    "conflicts": {
+      "expected": 3,
+      "found": 3,
+      "true_positives": 3,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "qa": {
+      "questions": 24,
+      "correct_citations": 24,
+      "citation_accuracy": 1.0,
+      "rows": [
+        {
+          "question": "What is the bond at Nexora Technologies?",
+          "cited": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Nexora Technologies and leave after 6 months, what could I owe?",
+          "cited": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Quantiva Systems?",
+          "cited": [
+            5,
+            6,
+            7
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Quantiva Systems and leave after 6 months, what could I owe?",
+          "cited": [
+            5,
+            6,
+            7
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Brightloom Infotech?",
+          "cited": [
+            8,
+            9,
+            10
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Brightloom Infotech and leave after 6 months, what could I owe?",
+          "cited": [
+            8,
+            9,
+            10
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Veltrix Solutions?",
+          "cited": [
+            11,
+            12,
+            13
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Veltrix Solutions and leave after 6 months, what could I owe?",
+          "cited": [
+            11,
+            12,
+            13
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Cognivista Labs?",
+          "cited": [
+            14,
+            15,
+            16
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Cognivista Labs and leave after 6 months, what could I owe?",
+          "cited": [
+            14,
+            15,
+            16
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Zentrova Software?",
+          "cited": [
+            17,
+            18,
+            19
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Zentrova Software and leave after 6 months, what could I owe?",
+          "cited": [
+            17,
+            18,
+            19
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Aarohan Digital?",
+          "cited": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Aarohan Digital and leave after 6 months, what could I owe?",
+          "cited": [
+            20,
+            21,
+            22,
+            23
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Trinetra Analytics?",
+          "cited": [
+            24,
+            25,
+            26
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Trinetra Analytics and leave after 6 months, what could I owe?",
+          "cited": [
+            24,
+            25,
+            26
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Orbitel Networks?",
+          "cited": [
+            27,
+            28,
+            29
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Orbitel Networks and leave after 6 months, what could I owe?",
+          "cited": [
+            27,
+            28,
+            29
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Lumenstack Technologies?",
+          "cited": [
+            30,
+            31,
+            32,
+            33
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Lumenstack Technologies and leave after 6 months, what could I owe?",
+          "cited": [
+            30,
+            31,
+            32,
+            33
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Corvanta Systems?",
+          "cited": [
+            34,
+            35,
+            36
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Corvanta Systems and leave after 6 months, what could I owe?",
+          "cited": [
+            34,
+            35,
+            36
+          ],
+          "ok": true
+        },
+        {
+          "question": "What is the bond at Sahyadri CloudWorks?",
+          "cited": [
+            37,
+            38,
+            39
+          ],
+          "ok": true
+        },
+        {
+          "question": "If I join Sahyadri CloudWorks and leave after 6 months, what could I owe?",
+          "cited": [
+            37,
+            38,
+            39
+          ],
+          "ok": true
+        }
+      ]
+    }
+  }
+}

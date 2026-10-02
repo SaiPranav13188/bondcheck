@@ -1,0 +1,1698 @@
+{
+  "letter_000": {
+    "file": "letter_000.pdf",
+    "fields": {
+      "company_name": "Rivanta Infotech Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Associate Engineer",
+      "ctc_annual": 350000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 125000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "Kavya Menon",
+      "H.No. 22-11, Banjara Colony",
+      "+91 8467698662",
+      "kavya.menon72@gmail.com",
+      "5170 6389 8026",
+      "NX18389",
+      "01/04/2003",
+      "Deepa Raghavan"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal"
+    ],
+    "scanned": false
+  },
+  "letter_001": {
+    "file": "letter_001.pdf",
+    "fields": {
+      "company_name": "Cognivista Labs Private Limited",
+      "batch_year": 2026,
+      "role": "Data Analyst Trainee",
+      "ctc_annual": 450000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 120000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "Harsha Krishnan",
+      "H.No. 24-98, Banjara Colony",
+      "+91 7111056975",
+      "harsha.krishnan2@gmail.com",
+      "4843 2604 3242",
+      "TRN59292",
+      "412442843990",
+      "Rekha Subramanian"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "prorated",
+      "certs_returned",
+      "probation_first"
+    ],
+    "scanned": false
+  },
+  "letter_002": {
+    "file": "letter_002.pdf",
+    "fields": {
+      "company_name": "Rivanta Infotech Pvt. Ltd.",
+      "batch_year": 2025,
+      "role": "Associate Engineer",
+      "ctc_annual": 350000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 125000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "Meera Gupta",
+      "H.No. 8-85, Gandhi Nagar",
+      "+91 6361527325",
+      "meera.gupta7@gmail.com",
+      "4612 1865 4948",
+      "TRN87211",
+      "135933823911",
+      "Farah Qureshi"
+    ],
+    "template": "table",
+    "tags": [
+      "table",
+      "certs_returned"
+    ],
+    "scanned": false
+  },
+  "letter_003": {
+    "file": "letter_003.pdf",
+    "fields": {
+      "company_name": "Nexora Technologies Pvt. Ltd.",
+      "batch_year": 2025,
+      "role": "Graduate Engineer Trainee",
+      "ctc_annual": 400000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 150000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "Meera Banerjee",
+      "H.No. 17-38, Lake View Layout",
+      "+91 7532439439",
+      "XGHKH1807T",
+      "9289 4959 2882",
+      "TRN59795",
+      "Vinod Bhat"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure"
+    ],
+    "scanned": false
+  },
+  "letter_004": {
+    "file": "letter_004.pdf",
+    "fields": {
+      "company_name": "Rivanta Infotech Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Associate Engineer",
+      "ctc_annual": 350000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 125000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "+91 6419821453",
+      "manoj.naidu29@gmail.com",
+      "9316 3801 6914",
+      "C90915",
+      "178574176705",
+      "Rekha Subramanian"
+    ],
+    "template": "email",
+    "tags": [
+      "email"
+    ],
+    "scanned": false
+  },
+  "letter_005": {
+    "file": "letter_005.pdf",
+    "fields": {
+      "company_name": "Rivanta Infotech Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Associate Engineer",
+      "ctc_annual": 350000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 125000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "Bhavana Das",
+      "H.No. 36-78, Park Street",
+      "+91 7324714953",
+      "bhavana.das68@gmail.com",
+      "GNNJL7111L",
+      "EMP24062",
+      "197143962030",
+      "Suresh Menon"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal",
+      "certs_returned"
+    ],
+    "scanned": false
+  },
+  "letter_006": {
+    "file": "letter_006.pdf",
+    "fields": {
+      "company_name": "Finlogic Microsystems Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Engineer",
+      "ctc_annual": 500000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 200000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Swathi Joshi",
+      "H.No. 29-37, Ashok Nagar",
+      "+91 7393983945",
+      "swathi.joshi55@gmail.com",
+      "YNQYL5562M",
+      "TRN98375",
+      "411425103007",
+      "Vinod Bhat"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "prorated",
+      "probation_first"
+    ],
+    "scanned": false
+  },
+  "letter_007": {
+    "file": "letter_007.pdf",
+    "fields": {
+      "company_name": "Sahyadri CloudWorks Pvt. Ltd.",
+      "batch_year": 2025,
+      "role": "Cloud Support Associate",
+      "ctc_annual": 420000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 90000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "Kavya Iyer",
+      "H.No. 5-75, FC Road",
+      "+91 9290296473",
+      "kavya.iyer92@gmail.com",
+      "ERXPF9942S",
+      "NX42828",
+      "17/08/2004",
+      "Anil Kapoor"
+    ],
+    "template": "table",
+    "tags": [
+      "table",
+      "scanned"
+    ],
+    "scanned": true
+  },
+  "letter_008": {
+    "file": "letter_008.pdf",
+    "fields": {
+      "company_name": "Trinetra Analytics Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Business Analyst",
+      "ctc_annual": 700000,
+      "has_bond": false,
+      "bond_months": null,
+      "penalty_amount": null,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Tejas Gupta",
+      "H.No. 34-67, FC Road",
+      "+91 7253828457",
+      "TRN25749",
+      "543131976303",
+      "06/01/2004",
+      "Rekha Subramanian"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure",
+      "no_bond"
+    ],
+    "scanned": false
+  },
+  "letter_009": {
+    "file": "letter_009.pdf",
+    "fields": {
+      "company_name": "Quantiva Systems Private Limited",
+      "batch_year": 2026,
+      "role": "Associate Software Engineer",
+      "ctc_annual": 550000,
+      "has_bond": true,
+      "bond_months": 12,
+      "penalty_amount": 100000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "+91 9865960935",
+      "nandini.banerjee23@gmail.com",
+      "NDQLC5650X",
+      "NX74943",
+      "243926861474",
+      "Anil Kapoor"
+    ],
+    "template": "email",
+    "tags": [
+      "email",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_010": {
+    "file": "letter_010.pdf",
+    "fields": {
+      "company_name": "Orbitel Networks Private Limited",
+      "batch_year": 2025,
+      "role": "Network Engineer Trainee",
+      "ctc_annual": 340000,
+      "has_bond": true,
+      "bond_months": 30,
+      "penalty_amount": 250000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "termination without notice during probation"
+      ]
+    },
+    "pii": [
+      "Diya Menon",
+      "H.No. 19-11, Ashok Nagar",
+      "+91 7904080715",
+      "diya.menon64@gmail.com",
+      "3502 3885 1540",
+      "EMP61086",
+      "10/05/2004",
+      "Anil Kapoor"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_011": {
+    "file": "letter_011.pdf",
+    "fields": {
+      "company_name": "Trinetra Analytics Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Business Analyst",
+      "ctc_annual": 700000,
+      "has_bond": false,
+      "bond_months": null,
+      "penalty_amount": null,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Aarav Verma",
+      "H.No. 1-51, MG Road",
+      "+91 6794232736",
+      "aarav.verma74@gmail.com",
+      "6188 7820 3683",
+      "EMP70911",
+      "747486617187",
+      "Vinod Bhat"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "no_bond",
+      "certs_returned",
+      "probation_first"
+    ],
+    "scanned": false
+  },
+  "letter_012": {
+    "file": "letter_012.pdf",
+    "fields": {
+      "company_name": "Cognivista Labs Private Limited",
+      "batch_year": 2025,
+      "role": "Data Analyst Trainee",
+      "ctc_annual": 450000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 120000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "Arjun Iyer",
+      "H.No. 18-94, FC Road",
+      "+91 8479316915",
+      "arjun.iyer56@gmail.com",
+      "UJFUT1914Z",
+      "4972 8131 9830",
+      "C38311",
+      "Rekha Subramanian"
+    ],
+    "template": "table",
+    "tags": [
+      "table",
+      "prorated",
+      "certs_returned"
+    ],
+    "scanned": false
+  },
+  "letter_013": {
+    "file": "letter_013.pdf",
+    "fields": {
+      "company_name": "Quantiva Systems Private Limited",
+      "batch_year": 2025,
+      "role": "Associate Software Engineer",
+      "ctc_annual": 550000,
+      "has_bond": true,
+      "bond_months": 12,
+      "penalty_amount": 100000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Varun Mishra",
+      "H.No. 31-82, FC Road",
+      "+91 8932959105",
+      "EMP50358",
+      "508766374618",
+      "20/10/2003",
+      "Farah Qureshi"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure",
+      "prorated",
+      "certs_returned",
+      "injection"
+    ],
+    "scanned": false
+  },
+  "letter_014": {
+    "file": "letter_014.pdf",
+    "fields": {
+      "company_name": "Orbitel Networks Private Limited",
+      "batch_year": 2026,
+      "role": "Network Engineer Trainee",
+      "ctc_annual": 340000,
+      "has_bond": true,
+      "bond_months": 30,
+      "penalty_amount": 250000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "termination without notice during probation"
+      ]
+    },
+    "pii": [
+      "+91 9237423049",
+      "rahul.krishnan70@gmail.com",
+      "9274 7614 8508",
+      "C16364",
+      "05/07/2003",
+      "Rekha Subramanian"
+    ],
+    "template": "email",
+    "tags": [
+      "email",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_015": {
+    "file": "letter_015.pdf",
+    "fields": {
+      "company_name": "Orbitel Networks Private Limited",
+      "batch_year": 2026,
+      "role": "Network Engineer Trainee",
+      "ctc_annual": 340000,
+      "has_bond": true,
+      "bond_months": 30,
+      "penalty_amount": 250000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "termination without notice during probation"
+      ]
+    },
+    "pii": [
+      "Vikram Menon",
+      "H.No. 30-83, Sector 18",
+      "+91 8872569507",
+      "vikram.menon48@gmail.com",
+      "4954 1936 7419",
+      "EMP66695",
+      "695686873091",
+      "Deepa Raghavan"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_016": {
+    "file": "letter_016.pdf",
+    "fields": {
+      "company_name": "Cognivista Labs Private Limited",
+      "batch_year": 2025,
+      "role": "Data Analyst Trainee",
+      "ctc_annual": 450000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 120000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "Harsha Mishra",
+      "H.No. 7-46, Ashok Nagar",
+      "+91 6329839795",
+      "harsha.mishra48@gmail.com",
+      "HXFTG5169N",
+      "3816 9544 3102",
+      "TRN77917",
+      "Farah Qureshi"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "prorated",
+      "probation_first"
+    ],
+    "scanned": false
+  },
+  "letter_017": {
+    "file": "letter_017.pdf",
+    "fields": {
+      "company_name": "Orbitel Networks Private Limited",
+      "batch_year": 2026,
+      "role": "Network Engineer Trainee",
+      "ctc_annual": 340000,
+      "has_bond": true,
+      "bond_months": 30,
+      "penalty_amount": 250000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "termination without notice during probation"
+      ]
+    },
+    "pii": [
+      "Rahul Verma",
+      "H.No. 18-79, MG Road",
+      "+91 9328544581",
+      "rahul.verma45@gmail.com",
+      "BCBUF9652Q",
+      "EMP97115",
+      "05/03/2004",
+      "Suresh Menon"
+    ],
+    "template": "table",
+    "tags": [
+      "table",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_018": {
+    "file": "letter_018.pdf",
+    "fields": {
+      "company_name": "Finlogic Microsystems Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Engineer",
+      "ctc_annual": 500000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 200000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Ananya Krishnan",
+      "H.No. 36-46, MG Road",
+      "+91 9191195303",
+      "YHZUH9114S",
+      "TRN66367",
+      "11/09/2003",
+      "Deepa Raghavan"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure",
+      "prorated",
+      "certs_returned"
+    ],
+    "scanned": false
+  },
+  "letter_019": {
+    "file": "letter_019.pdf",
+    "fields": {
+      "company_name": "Pixelmint Studios Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Junior UI Developer",
+      "ctc_annual": 360000,
+      "has_bond": true,
+      "bond_months": 12,
+      "penalty_amount": 50000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 30,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "+91 9372734734",
+      "pranav.reddy15@gmail.com",
+      "QBZGZ2599G",
+      "TRN59360",
+      "739339892099",
+      "Rekha Subramanian"
+    ],
+    "template": "email",
+    "tags": [
+      "email",
+      "scanned"
+    ],
+    "scanned": true
+  },
+  "letter_020": {
+    "file": "letter_020.pdf",
+    "fields": {
+      "company_name": "Trinetra Analytics Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Business Analyst",
+      "ctc_annual": 700000,
+      "has_bond": false,
+      "bond_months": null,
+      "penalty_amount": null,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Lakshmi Joshi",
+      "H.No. 38-74, Anna Salai",
+      "+91 9136414361",
+      "lakshmi.joshi16@gmail.com",
+      "6923 3786 7983",
+      "TRN37550",
+      "23/12/2003",
+      "Rekha Subramanian"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal",
+      "no_bond"
+    ],
+    "scanned": false
+  },
+  "letter_021": {
+    "file": "letter_021.pdf",
+    "fields": {
+      "company_name": "Indigrid Consulting Private Limited",
+      "batch_year": 2026,
+      "role": "Trainee Consultant",
+      "ctc_annual": 330000,
+      "has_bond": true,
+      "bond_months": 36,
+      "penalty_amount": 350000,
+      "penalty_prorated": "no",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": true,
+      "other_risky_clauses": [
+        "blank cheques or surety required",
+        "non-compete clause"
+      ]
+    },
+    "pii": [
+      "Aarav Nair",
+      "H.No. 30-86, Gandhi Nagar",
+      "+91 9258170846",
+      "aarav.nair70@gmail.com",
+      "5990 1618 6042",
+      "TRN63473",
+      "06/02/2004",
+      "Anil Kapoor"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "probation_first"
+    ],
+    "scanned": false
+  },
+  "letter_022": {
+    "file": "letter_022.pdf",
+    "fields": {
+      "company_name": "Cognivista Labs Private Limited",
+      "batch_year": 2025,
+      "role": "Data Analyst Trainee",
+      "ctc_annual": 450000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 120000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "Swathi Nair",
+      "H.No. 7-12, Gandhi Nagar",
+      "+91 8709070695",
+      "swathi.nair51@gmail.com",
+      "DRWSY3083W",
+      "TRN68132",
+      "732281343935",
+      "Rekha Subramanian"
+    ],
+    "template": "table",
+    "tags": [
+      "table",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_023": {
+    "file": "letter_023.pdf",
+    "fields": {
+      "company_name": "Finlogic Microsystems Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Engineer",
+      "ctc_annual": 500000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 200000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Sneha Mishra",
+      "H.No. 35-90, MG Road",
+      "+91 8600548965",
+      "MUEVR3999G",
+      "NX96244",
+      "17/05/2004",
+      "Anil Kapoor"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_024": {
+    "file": "letter_024.pdf",
+    "fields": {
+      "company_name": "Orbitel Networks Private Limited",
+      "batch_year": 2025,
+      "role": "Network Engineer Trainee",
+      "ctc_annual": 340000,
+      "has_bond": true,
+      "bond_months": 30,
+      "penalty_amount": 250000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "termination without notice during probation"
+      ]
+    },
+    "pii": [
+      "+91 6223272182",
+      "sai.gupta33@gmail.com",
+      "3125 4752 2356",
+      "NX41617",
+      "205686509365",
+      "Farah Qureshi"
+    ],
+    "template": "email",
+    "tags": [
+      "email",
+      "prorated",
+      "certs_returned"
+    ],
+    "scanned": false
+  },
+  "letter_025": {
+    "file": "letter_025.pdf",
+    "fields": {
+      "company_name": "Corvanta Systems Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Programmer Analyst Trainee",
+      "ctc_annual": 320000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 180000,
+      "penalty_prorated": "no",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": true,
+      "other_risky_clauses": [
+        "salary forfeited on early exit"
+      ]
+    },
+    "pii": [
+      "Nandini Verma",
+      "H.No. 22-18, Sector 18",
+      "+91 8395110443",
+      "nandini.verma11@gmail.com",
+      "2787 1457 7386",
+      "C11119",
+      "04/10/2003",
+      "Anil Kapoor"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal"
+    ],
+    "scanned": false
+  },
+  "letter_026": {
+    "file": "letter_026.pdf",
+    "fields": {
+      "company_name": "Rivanta Infotech Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Associate Engineer",
+      "ctc_annual": 350000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 125000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "Ananya Rao",
+      "H.No. 4-94, Banjara Colony",
+      "+91 7431677120",
+      "ananya.rao33@gmail.com",
+      "PQAEZ2079K",
+      "TRN83078",
+      "28/05/2004",
+      "Anil Kapoor"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "probation_first",
+      "injection"
+    ],
+    "scanned": false
+  },
+  "letter_027": {
+    "file": "letter_027.pdf",
+    "fields": {
+      "company_name": "Zentrova Software Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Trainee",
+      "ctc_annual": 360000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 200000,
+      "penalty_prorated": "no",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": true,
+      "other_risky_clauses": [
+        "non-compete clause"
+      ]
+    },
+    "pii": [
+      "Meera Pillai",
+      "H.No. 20-72, FC Road",
+      "+91 9991786985",
+      "meera.pillai51@gmail.com",
+      "4287 9123 7393",
+      "C53355",
+      "11/02/2003",
+      "Farah Qureshi"
+    ],
+    "template": "table",
+    "tags": [
+      "table"
+    ],
+    "scanned": false
+  },
+  "letter_028": {
+    "file": "letter_028.pdf",
+    "fields": {
+      "company_name": "Lumenstack Technologies Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Software Engineer - I",
+      "ctc_annual": 650000,
+      "has_bond": true,
+      "bond_months": 12,
+      "penalty_amount": 75000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Kavya Verma",
+      "H.No. 35-38, Sector 18",
+      "+91 9920861355",
+      "MVTDG3485S",
+      "C24908",
+      "675859047977",
+      "Deepa Raghavan"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure",
+      "prorated",
+      "scanned"
+    ],
+    "scanned": true
+  },
+  "letter_029": {
+    "file": "letter_029.pdf",
+    "fields": {
+      "company_name": "Sahyadri CloudWorks Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Cloud Support Associate",
+      "ctc_annual": 420000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 90000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "+91 7957498726",
+      "keerthi.krishnan79@gmail.com",
+      "DVLJG3044C",
+      "NX88425",
+      "933497254193",
+      "Deepa Raghavan"
+    ],
+    "template": "email",
+    "tags": [
+      "email"
+    ],
+    "scanned": false
+  },
+  "letter_030": {
+    "file": "letter_030.pdf",
+    "fields": {
+      "company_name": "Zentrova Software Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Trainee",
+      "ctc_annual": 360000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 200000,
+      "penalty_prorated": "no",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": true,
+      "other_risky_clauses": [
+        "non-compete clause"
+      ]
+    },
+    "pii": [
+      "Aditya Kulkarni",
+      "H.No. 38-81, Banjara Colony",
+      "+91 8487872929",
+      "aditya.kulkarni36@gmail.com",
+      "5555 9364 9471",
+      "TRN23976",
+      "14/02/2004",
+      "Deepa Raghavan"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal"
+    ],
+    "scanned": false
+  },
+  "letter_031": {
+    "file": "letter_031.pdf",
+    "fields": {
+      "company_name": "Finlogic Microsystems Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Engineer",
+      "ctc_annual": 500000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 200000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Ritika Reddy",
+      "H.No. 6-12, Lake View Layout",
+      "+91 8919183655",
+      "ritika.reddy17@gmail.com",
+      "LCSLQ9668X",
+      "2952 4154 7665",
+      "TRN84474",
+      "Deepa Raghavan"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "prorated",
+      "probation_first"
+    ],
+    "scanned": false
+  },
+  "letter_032": {
+    "file": "letter_032.pdf",
+    "fields": {
+      "company_name": "Quantiva Systems Private Limited",
+      "batch_year": 2026,
+      "role": "Associate Software Engineer",
+      "ctc_annual": 550000,
+      "has_bond": true,
+      "bond_months": 12,
+      "penalty_amount": 100000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Divya Verma",
+      "H.No. 40-83, FC Road",
+      "+91 7375958862",
+      "divya.verma20@gmail.com",
+      "VCHBD1262G",
+      "NX59209",
+      "154487117400",
+      "Deepa Raghavan"
+    ],
+    "template": "table",
+    "tags": [
+      "table",
+      "prorated",
+      "certs_returned"
+    ],
+    "scanned": false
+  },
+  "letter_033": {
+    "file": "letter_033.pdf",
+    "fields": {
+      "company_name": "Indigrid Consulting Private Limited",
+      "batch_year": 2026,
+      "role": "Trainee Consultant",
+      "ctc_annual": 330000,
+      "has_bond": true,
+      "bond_months": 36,
+      "penalty_amount": 350000,
+      "penalty_prorated": "no",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": true,
+      "other_risky_clauses": [
+        "blank cheques or surety required",
+        "non-compete clause"
+      ]
+    },
+    "pii": [
+      "Sneha Shetty",
+      "H.No. 1-96, Ashok Nagar",
+      "+91 8729281916",
+      "TRN56446",
+      "206095200076",
+      "12/01/2003",
+      "Vinod Bhat"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure"
+    ],
+    "scanned": false
+  },
+  "letter_034": {
+    "file": "letter_034.pdf",
+    "fields": {
+      "company_name": "Veltrix Solutions Pvt. Ltd.",
+      "batch_year": 2025,
+      "role": "Software Developer",
+      "ctc_annual": 800000,
+      "has_bond": false,
+      "bond_months": null,
+      "penalty_amount": null,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 30,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "+91 7961046145",
+      "meera.kulkarni90@gmail.com",
+      "TRN85369",
+      "509605866331",
+      "20/05/2003",
+      "Anil Kapoor"
+    ],
+    "template": "email",
+    "tags": [
+      "email",
+      "no_bond"
+    ],
+    "scanned": false
+  },
+  "letter_035": {
+    "file": "letter_035.pdf",
+    "fields": {
+      "company_name": "Cognivista Labs Private Limited",
+      "batch_year": 2025,
+      "role": "Data Analyst Trainee",
+      "ctc_annual": 450000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 120000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": true,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "Sneha Nair",
+      "H.No. 15-33, Sector 18",
+      "+91 6298455856",
+      "sneha.nair92@gmail.com",
+      "HDUJH9014A",
+      "C47350",
+      "08/06/2003",
+      "Suresh Menon"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_036": {
+    "file": "letter_036.pdf",
+    "fields": {
+      "company_name": "Finlogic Microsystems Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Engineer",
+      "ctc_annual": 500000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 200000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Bhavana Nair",
+      "H.No. 22-39, MG Road",
+      "+91 7761022296",
+      "bhavana.nair14@gmail.com",
+      "DUXHP9613W",
+      "3294 3958 9730",
+      "NX18598",
+      "Farah Qureshi"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "prorated",
+      "certs_returned",
+      "probation_first",
+      "injection",
+      "scanned"
+    ],
+    "scanned": true
+  },
+  "letter_037": {
+    "file": "letter_037.pdf",
+    "fields": {
+      "company_name": "Rivanta Infotech Pvt. Ltd.",
+      "batch_year": 2025,
+      "role": "Associate Engineer",
+      "ctc_annual": 350000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 125000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "Arjun Banerjee",
+      "H.No. 34-23, Ashok Nagar",
+      "+91 9915081708",
+      "arjun.banerjee72@gmail.com",
+      "VXVSK7850Y",
+      "EMP55951",
+      "797390938609",
+      "Farah Qureshi"
+    ],
+    "template": "table",
+    "tags": [
+      "table"
+    ],
+    "scanned": false
+  },
+  "letter_038": {
+    "file": "letter_038.pdf",
+    "fields": {
+      "company_name": "Rivanta Infotech Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Associate Engineer",
+      "ctc_annual": 350000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 125000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "Keerthi Sharma",
+      "H.No. 10-49, Banjara Colony",
+      "+91 9206771932",
+      "YYMZQ2224R",
+      "NX32571",
+      "356543496912",
+      "Anil Kapoor"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure",
+      "certs_returned",
+      "injection"
+    ],
+    "scanned": false
+  },
+  "letter_039": {
+    "file": "letter_039.pdf",
+    "fields": {
+      "company_name": "Nexora Technologies Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Engineer Trainee",
+      "ctc_annual": 420000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 150000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "salary withheld during probation"
+      ]
+    },
+    "pii": [
+      "+91 8142590035",
+      "divya.krishnan47@gmail.com",
+      "3644 1255 1082",
+      "C61321",
+      "11/04/2003",
+      "Farah Qureshi"
+    ],
+    "template": "email",
+    "tags": [
+      "email",
+      "certs_returned"
+    ],
+    "scanned": false
+  },
+  "letter_040": {
+    "file": "letter_040.pdf",
+    "fields": {
+      "company_name": "Indigrid Consulting Private Limited",
+      "batch_year": 2026,
+      "role": "Trainee Consultant",
+      "ctc_annual": 330000,
+      "has_bond": true,
+      "bond_months": 36,
+      "penalty_amount": 350000,
+      "penalty_prorated": "no",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": true,
+      "other_risky_clauses": [
+        "blank cheques or surety required",
+        "non-compete clause"
+      ]
+    },
+    "pii": [
+      "Siddharth Pillai",
+      "H.No. 13-52, MG Road",
+      "+91 8112197174",
+      "siddharth.pillai8@gmail.com",
+      "7314 1098 1631",
+      "C21496",
+      "422141431985",
+      "Rekha Subramanian"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal"
+    ],
+    "scanned": false
+  },
+  "letter_041": {
+    "file": "letter_041.pdf",
+    "fields": {
+      "company_name": "Sahyadri CloudWorks Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Cloud Support Associate",
+      "ctc_annual": 420000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 90000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "Karthik Das",
+      "H.No. 10-14, FC Road",
+      "+91 6406318255",
+      "karthik.das67@gmail.com",
+      "BDPWG5294J",
+      "EMP97921",
+      "189747443162",
+      "Anil Kapoor"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "probation_first"
+    ],
+    "scanned": false
+  },
+  "letter_042": {
+    "file": "letter_042.pdf",
+    "fields": {
+      "company_name": "Corvanta Systems Pvt. Ltd.",
+      "batch_year": 2025,
+      "role": "Programmer Analyst Trainee",
+      "ctc_annual": 320000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 180000,
+      "penalty_prorated": "no",
+      "notice_days": 90,
+      "training_cost_recovery": true,
+      "certificates_retained": true,
+      "other_risky_clauses": [
+        "salary forfeited on early exit"
+      ]
+    },
+    "pii": [
+      "Siddharth Patel",
+      "H.No. 10-54, Lake View Layout",
+      "+91 8173651313",
+      "siddharth.patel97@gmail.com",
+      "XLBUQ4421J",
+      "EMP23281",
+      "126906422229",
+      "Vinod Bhat"
+    ],
+    "template": "table",
+    "tags": [
+      "table"
+    ],
+    "scanned": false
+  },
+  "letter_043": {
+    "file": "letter_043.pdf",
+    "fields": {
+      "company_name": "Sahyadri CloudWorks Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Cloud Support Associate",
+      "ctc_annual": 420000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 90000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "Arjun Banerjee",
+      "H.No. 29-60, Ashok Nagar",
+      "+91 8643963684",
+      "CSNGG2818Y",
+      "4204 2050 7609",
+      "TRN28398",
+      "Rekha Subramanian"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure"
+    ],
+    "scanned": false
+  },
+  "letter_044": {
+    "file": "letter_044.pdf",
+    "fields": {
+      "company_name": "Sahyadri CloudWorks Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Cloud Support Associate",
+      "ctc_annual": 420000,
+      "has_bond": true,
+      "bond_months": 18,
+      "penalty_amount": 90000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": [
+        "can be relocated anywhere"
+      ]
+    },
+    "pii": [
+      "+91 7783116997",
+      "ishita.das87@gmail.com",
+      "YSDBT5530Z",
+      "TRN92802",
+      "557952843761",
+      "Farah Qureshi"
+    ],
+    "template": "email",
+    "tags": [
+      "email",
+      "scanned"
+    ],
+    "scanned": true
+  },
+  "letter_045": {
+    "file": "letter_045.pdf",
+    "fields": {
+      "company_name": "Quantiva Systems Private Limited",
+      "batch_year": 2026,
+      "role": "Associate Software Engineer",
+      "ctc_annual": 550000,
+      "has_bond": true,
+      "bond_months": 12,
+      "penalty_amount": 100000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Sai Reddy",
+      "H.No. 18-77, Lake View Layout",
+      "+91 8782799880",
+      "sai.reddy74@gmail.com",
+      "MKTVP7877A",
+      "C94447",
+      "04/03/2004",
+      "Farah Qureshi"
+    ],
+    "template": "formal",
+    "tags": [
+      "formal",
+      "prorated"
+    ],
+    "scanned": false
+  },
+  "letter_046": {
+    "file": "letter_046.pdf",
+    "fields": {
+      "company_name": "Finlogic Microsystems Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Graduate Engineer",
+      "ctc_annual": 500000,
+      "has_bond": true,
+      "bond_months": 24,
+      "penalty_amount": 200000,
+      "penalty_prorated": "yes",
+      "notice_days": 90,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Aarav Banerjee",
+      "H.No. 29-81, Park Street",
+      "+91 7181578457",
+      "aarav.banerjee66@gmail.com",
+      "7504 4584 9534",
+      "C18465",
+      "05/12/2002",
+      "Vinod Bhat"
+    ],
+    "template": "tricky",
+    "tags": [
+      "tricky",
+      "prorated",
+      "probation_first",
+      "injection"
+    ],
+    "scanned": false
+  },
+  "letter_047": {
+    "file": "letter_047.pdf",
+    "fields": {
+      "company_name": "Pixelmint Studios Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Junior UI Developer",
+      "ctc_annual": 360000,
+      "has_bond": true,
+      "bond_months": 12,
+      "penalty_amount": 50000,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 30,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Nandini Krishnan",
+      "H.No. 26-74, Lake View Layout",
+      "+91 9529969654",
+      "nandini.krishnan63@gmail.com",
+      "LRJTT4241W",
+      "NX16057",
+      "574134178706",
+      "Anil Kapoor"
+    ],
+    "template": "table",
+    "tags": [
+      "table"
+    ],
+    "scanned": false
+  },
+  "letter_048": {
+    "file": "letter_048.pdf",
+    "fields": {
+      "company_name": "Lumenstack Technologies Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Software Engineer - I",
+      "ctc_annual": 650000,
+      "has_bond": true,
+      "bond_months": 12,
+      "penalty_amount": 75000,
+      "penalty_prorated": "yes",
+      "notice_days": 60,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "Siddharth Menon",
+      "H.No. 15-13, Banjara Colony",
+      "+91 6514598241",
+      "7751 4826 6877",
+      "EMP33818",
+      "123231194842",
+      "Suresh Menon"
+    ],
+    "template": "annexure",
+    "tags": [
+      "annexure",
+      "prorated",
+      "certs_returned",
+      "injection"
+    ],
+    "scanned": false
+  },
+  "letter_049": {
+    "file": "letter_049.pdf",
+    "fields": {
+      "company_name": "Veltrix Solutions Pvt. Ltd.",
+      "batch_year": 2026,
+      "role": "Software Developer",
+      "ctc_annual": 800000,
+      "has_bond": false,
+      "bond_months": null,
+      "penalty_amount": null,
+      "penalty_prorated": "not_mentioned",
+      "notice_days": 30,
+      "training_cost_recovery": false,
+      "certificates_retained": false,
+      "other_risky_clauses": []
+    },
+    "pii": [
+      "+91 6781317951",
+      "tejas.iyer85@gmail.com",
+      "FPMVF9314Q",
+      "TRN45338",
+      "07/08/2004",
+      "Farah Qureshi"
+    ],
+    "template": "email",
+    "tags": [
+      "email",
+      "no_bond"
+    ],
+    "scanned": false
+  }
+}

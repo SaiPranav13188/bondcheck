@@ -1,0 +1,21 @@
+# Render Blueprint: New + > Blueprint > select this repo. Fill the "sync: false" values when prompted.
+services:
+  - type: web
+    name: bondcheck-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL          # Supabase > Connect > Session pooler URI
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: CRON_SECRET
+        sync: false
+      - key: ANTHROPIC_API_KEY     # optional; leave empty for the offline engine
+        sync: false
+      - key: SITE_URL              # your Vercel URL, used in alert emails
+        sync: false
+      - key: RESEND_API_KEY        # optional; without it alert emails go to the container's outbox
+        sync: false

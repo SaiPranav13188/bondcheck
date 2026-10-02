@@ -1,0 +1,58 @@
+[
+  {
+    "key": "nexora_2026_offer",
+    "title": "Nexora 2026 offer letter",
+    "description": "A standard appointment letter with a 24-month bond.",
+    "expect": "corroborate",
+    "scanned": false
+  },
+  {
+    "key": "rivanta_conflicting_terms",
+    "title": "Rivanta letter with different terms",
+    "description": "Reports a different penalty from earlier uploads.",
+    "expect": "conflict",
+    "scanned": false
+  },
+  {
+    "key": "orbitel_tricky_clauses",
+    "title": "Orbitel letter with tricky clauses",
+    "description": "Probation, a training stipend and the bond are all in different clauses.",
+    "expect": "self-correction",
+    "scanned": false
+  },
+  {
+    "key": "trinetra_no_bond",
+    "title": "Trinetra email offer (no bond)",
+    "description": "An email-style offer without a bond.",
+    "expect": "variant/corroborate",
+    "scanned": false
+  },
+  {
+    "key": "pixelmint_unclear_penalty",
+    "title": "Pixelmint letter with an unclear penalty",
+    "description": "The penalty amount is not written in the letter, so the agent asks you.",
+    "expect": "asks uploader",
+    "scanned": false
+  },
+  {
+    "key": "stellarbyte_new_company",
+    "title": "Stellarbyte offer (new company)",
+    "description": "A company BondCheck hasn't seen yet.",
+    "expect": "new_company",
+    "scanned": false
+  },
+  {
+    "key": "brightloom_scanned",
+    "title": "Scanned Brightloom letter",
+    "description": "An image-only scan that needs OCR.",
+    "expect": "ocr",
+    "scanned": true
+  },
+  {
+    "key": "not_an_offer_letter",
+    "title": "A college fee receipt",
+    "description": "Not an offer letter; the Orchestrator should reject it.",
+    "expect": "rejected",
+    "scanned": false
+  }
+]
