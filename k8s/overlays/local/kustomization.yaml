@@ -1,0 +1,16 @@
+# Local cluster (kind / minikube / Docker Desktop) with in-cluster PostgreSQL.
+# Secrets come from overlays/local/secrets.env (gitignored); copy secrets.env.example to start.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+secretGenerator:
+  - name: bondcheck-secrets
+    namespace: bondcheck
+    envs:
+      - secrets.env
+images:
+  - name: bondcheck-api
+    newTag: dev
+  - name: bondcheck-frontend
+    newTag: dev

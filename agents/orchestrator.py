@@ -9,7 +9,9 @@
 * Retries a failed step at most `max_retries` times, then escalates to a moderator.
 * Enforces a token budget per run and a recursion limit against runaway loops.
 * Pauses with `interrupt()` while the uploader confirms uncertain fields; the checkpoint lives
-  in memory only (InMemorySaver), so document text is never written to disk.
+  in memory only (InMemorySaver), so document text is never written to disk. With several API
+  replicas, the pausing pod records itself as the owner (core.cluster) so any replica can forward
+  the confirmation to it.
 * Logs every step to `agent_runs`.
 """
 from __future__ import annotations
@@ -25,7 +27,7 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.types import Command, interrupt
 
 from agents import extraction, privacy, verification
-from core import llm, runlog
+from core import cluster, llm, runlog
 from core.config import settings
 from core.runlog import RunContext
 from core.state import UploadState
@@ -297,6 +299,7 @@ def _run_in_thread(ctx: RunContext, payload, upload_id: str) -> None:
             if ctx.result["status"] == "needs_confirmation":
                 ctx.emit(O, "ask", "Paused: waiting for the uploader to confirm uncertain fields")
                 ctx.log_orchestrator("paused")
+                cluster.claim(upload_id)
             else:
                 _forget(upload_id)
         except Exception as e:  # noqa: BLE001
@@ -317,6 +320,13 @@ def _forget(upload_id: str) -> None:
         _checkpointer.delete_thread(upload_id)
     except Exception:  # noqa: BLE001
         pass
+    cluster.release(upload_id)
+
+
+def is_waiting(upload_id: str) -> bool:
+    """True if this process holds a checkpoint paused at the uploader-confirmation step."""
+    snap = GRAPH.get_state(_config(upload_id))
+    return bool(snap.next) and "confirm" in snap.next
 
 
 def start_upload(data: bytes, filename: str, batch_year_hint: int | None = None, background: bool = True) -> RunContext:
@@ -333,12 +343,13 @@ def start_upload(data: bytes, filename: str, batch_year_hint: int | None = None,
         ctx.result = _result(upload_id)
         if ctx.result["status"] != "needs_confirmation":
             _forget(upload_id)
+        else:
+            cluster.claim(upload_id)
     return ctx
 
 
 def resume_upload(upload_id: str, answers: dict, background: bool = True) -> RunContext:
-    snap = GRAPH.get_state(_config(upload_id))
-    if not snap.next or "confirm" not in snap.next:
+    if not is_waiting(upload_id):
         raise KeyError("this upload is not waiting for confirmation (it may have expired)")
     old = runlog._CONTEXTS.get(upload_id)
     ctx = RunContext("upload", run_ref=upload_id)

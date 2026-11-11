@@ -1,0 +1,80 @@
+# Traffic entry point, using the Kubernetes Gateway API with Envoy Gateway as the controller
+# (installed by scripts/k8s-up.sh). One origin serves both apps:
+#   /backend/*  -> bondcheck-api      (prefix stripped: /backend/companies -> /companies)
+#   /*          -> bondcheck-frontend
+# The GatewayClass (cluster-scoped) lives in k8s/cluster/.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: bondcheck
+spec:
+  gatewayClassName: bondcheck-envoy
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: bondcheck-api
+spec:
+  parentRefs:
+    - name: bondcheck
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /backend
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /
+      backendRefs:
+        - name: bondcheck-api
+          port: 8000
+      timeouts:
+        request: 330s            # upload/ask stream NDJSON while the agents work (API gives up at 300s)
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: bondcheck-frontend
+spec:
+  parentRefs:
+    - name: bondcheck
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: bondcheck-frontend
+          port: 3000
+---
+# Load-balancing policy for the API. Agent requests vary from milliseconds (cached reads) to tens of
+# seconds (an upload through five agents), so round-robin would pile slow requests onto one pod.
+# Least-request sends each new request to the replica with the fewest in-flight requests.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: bondcheck-api
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: bondcheck-api
+  loadBalancer:
+    type: LeastRequest
+  # Take a replica out of rotation after repeated 5xx/connection failures, before its probes notice.
+  healthCheck:
+    passive:
+      consecutive5XxErrors: 5
+      interval: 10s
+      baseEjectionTime: 30s
+      maxEjectionPercent: 50

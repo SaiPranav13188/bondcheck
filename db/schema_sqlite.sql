@@ -129,3 +129,11 @@ FROM offer_records r
 JOIN companies c ON c.id = r.company_id
 WHERE r.status = 'verified' AND r.source_type = 'upload'
 GROUP BY c.id, c.name, r.batch_year, r.role;
+
+-- Kubernetes (extension): which API pod holds a paused upload's in-memory checkpoint.
+CREATE TABLE IF NOT EXISTS upload_owners (
+    upload_id  TEXT PRIMARY KEY,
+    owner_url  TEXT NOT NULL,
+    instance   TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);

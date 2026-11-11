@@ -1,6 +1,11 @@
+.git
+.github
 .venv
+.pytest_cache
+**/__pycache__
+.env
 frontend
+k8s
+scripts
 data/*.db*
 data/outbox
-__pycache__
-.pytest_cache

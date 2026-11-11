@@ -4,3 +4,6 @@ __pycache__/
 .env
 data/*.db*
 data/outbox/
+
+# Kubernetes secrets
+k8s/overlays/*/secrets.env

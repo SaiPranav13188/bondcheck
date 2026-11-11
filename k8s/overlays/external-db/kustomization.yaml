@@ -1,0 +1,38 @@
+# Managed PostgreSQL (Supabase / Neon): drops the in-cluster database and reads DATABASE_URL from the
+# secret. Put DATABASE_URL (Supabase: the Session pooler URI) and the other keys in secrets.env.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../base
+secretGenerator:
+  - name: bondcheck-secrets
+    namespace: bondcheck
+    envs:
+      - secrets.env
+images:
+  - name: bondcheck-api
+    newName: ghcr.io/saipranav13188/bondcheck-api      # pushed by .github/workflows/k8s.yml
+    newTag: latest
+  - name: bondcheck-frontend
+    newName: ghcr.io/saipranav13188/bondcheck-frontend
+    newTag: latest
+patches:
+  - path: use-external-db.yaml
+  - target: { kind: StatefulSet, name: postgres }
+    patch: |
+      $patch: delete
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata: { name: postgres }
+  - target: { kind: Service, name: postgres }
+    patch: |
+      $patch: delete
+      apiVersion: v1
+      kind: Service
+      metadata: { name: postgres }
+  - target: { kind: NetworkPolicy, name: postgres-allow-app-only }
+    patch: |
+      $patch: delete
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      metadata: { name: postgres-allow-app-only }
