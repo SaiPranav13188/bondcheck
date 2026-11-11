@@ -1,0 +1,34 @@
+# DATABASE_URL comes straight from the secret instead of being built from the in-cluster password.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bondcheck-api
+spec:
+  template:
+    spec:
+      containers:
+        - name: api
+          env:
+            - name: POSTGRES_PASSWORD
+              $patch: delete
+            - name: DATABASE_URL
+              value: null
+              valueFrom:
+                secretKeyRef: { name: bondcheck-secrets, key: DATABASE_URL }
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bondcheck-migrate
+spec:
+  template:
+    spec:
+      containers:
+        - name: migrate
+          env:
+            - name: POSTGRES_PASSWORD
+              $patch: delete
+            - name: DATABASE_URL
+              value: null
+              valueFrom:
+                secretKeyRef: { name: bondcheck-secrets, key: DATABASE_URL }

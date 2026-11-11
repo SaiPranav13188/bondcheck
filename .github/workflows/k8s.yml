@@ -1,0 +1,103 @@
+# Kubernetes CI: validate the manifests, then deploy the whole stack to a real 3-node kind cluster
+# and prove that requests are load-balanced across API replicas. On pushes to main, also publish
+# the images to GitHub Container Registry (used by k8s/overlays/external-db).
+name: kubernetes
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  ENVOY_GATEWAY_VERSION: v1.9.3
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render overlays with kustomize
+        run: |
+          for o in local external-db; do
+            cp k8s/overlays/$o/secrets.env.example k8s/overlays/$o/secrets.env
+            kubectl kustomize k8s/overlays/$o > /tmp/$o.yaml
+            echo "$o: $(grep -c '^kind:' /tmp/$o.yaml) objects"
+          done
+      - name: Schema-validate with kubeconform (incl. Gateway API + Envoy Gateway CRDs)
+        run: |
+          curl -fsSL https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz | tar xz
+          ./kubeconform -strict -summary -ignore-missing-schemas -kubernetes-version 1.33.0 \
+            -schema-location default \
+            -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+            /tmp/local.yaml /tmp/external-db.yaml k8s/cluster/gatewayclass.yaml
+
+  e2e:
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - uses: azure/setup-helm@v4
+      - name: Create kind cluster (1 control plane + 2 workers)
+        uses: helm/kind-action@v1
+        with:
+          version: v0.31.0
+          cluster_name: bondcheck
+          config: k8s/kind-config.yaml
+      - name: Deploy with scripts/k8s-up.sh
+        run: scripts/k8s-up.sh --no-forward
+      - name: Replicas are spread across worker nodes
+        run: kubectl -n bondcheck get pods -l app.kubernetes.io/name=bondcheck-api -o wide
+      - name: Load test through the gateway (must hit >= 3 API pods, >= 99% success)
+        run: |
+          pip install httpx
+          scripts/k8s-forward.sh > /tmp/pf.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS localhost:8080/backend/ready && break; sleep 2; done
+          python scripts/loadtest.py -n 600 -c 30 --scenario mixed --min-pods 3
+          curl -fsS localhost:8080/ | grep -qi bondcheck   # frontend served through the same gateway
+      - name: Zero-downtime rolling restart under load
+        run: |
+          python scripts/loadtest.py --duration 60 -c 10 &
+          LT=$!
+          sleep 5
+          kubectl -n bondcheck rollout restart deployment/bondcheck-api
+          kubectl -n bondcheck rollout status deployment/bondcheck-api --timeout=5m
+          wait $LT
+      - name: Diagnostics
+        if: failure()
+        run: |
+          kubectl get pods -A -o wide
+          kubectl -n bondcheck describe pods
+          kubectl -n bondcheck logs job/bondcheck-migrate --tail=100 || true
+          kubectl -n bondcheck logs -l app.kubernetes.io/name=bondcheck-api --tail=50 --prefix || true
+          kubectl -n bondcheck get gateway,httproute,backendtrafficpolicy -o yaml
+          cat /tmp/pf.log || true
+
+  publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: e2e
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push images
+        run: |
+          owner=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          for img in api frontend; do
+            ctx=.; [ $img = frontend ] && ctx=frontend
+            docker build -t ghcr.io/$owner/bondcheck-$img:${{ github.sha }} -t ghcr.io/$owner/bondcheck-$img:latest $ctx
+            docker push --all-tags ghcr.io/$owner/bondcheck-$img
+          done

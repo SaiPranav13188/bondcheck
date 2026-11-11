@@ -111,6 +111,15 @@ CREATE TABLE IF NOT EXISTS alerts_sent (
     UNIQUE (user_id, drive_id)
 );
 
+-- Kubernetes (extension): which API pod holds a paused upload's in-memory checkpoint, so any
+-- replica can forward the uploader's confirmation to it. Holds no document text.
+CREATE TABLE IF NOT EXISTS upload_owners (
+    upload_id  TEXT PRIMARY KEY,
+    owner_url  TEXT NOT NULL,
+    instance   TEXT,
+    created_at TIMESTAMPTZ DEFAULT now()
+);
+
 CREATE INDEX IF NOT EXISTS idx_records_company ON offer_records(company_id, batch_year, role);
 CREATE INDEX IF NOT EXISTS idx_evidence_record ON evidence(record_id);
 

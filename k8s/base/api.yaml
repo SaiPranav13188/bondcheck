@@ -1,0 +1,187 @@
+# BondCheck API: a horizontally scaled, stateless FastAPI + LangGraph tier.
+# Requests are spread across replicas by the Envoy gateway (least-request) and the Service.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bondcheck-api
+  labels:
+    app.kubernetes.io/name: bondcheck-api
+    app.kubernetes.io/component: api
+spec:
+  replicas: 3                      # the HPA takes over from here (3..10)
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0            # zero-downtime rollouts: a new pod must be Ready before an old one goes
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bondcheck-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: bondcheck-api
+        app.kubernetes.io/component: api
+        bondcheck.dev/db-access: "true"
+    spec:
+      terminationGracePeriodSeconds: 45   # preStop (5s) + uvicorn graceful shutdown (25s) + margin
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile:
+          type: RuntimeDefault
+      # Spread replicas over nodes so losing one node doesn't take the whole API down.
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: bondcheck-api
+      containers:
+        - name: api
+          image: bondcheck-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: bondcheck-config
+          env:
+            # Pod identity: shown in X-Served-By, and used to forward a paused upload's confirmation
+            # to the replica that holds it in memory (core/cluster.py).
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bondcheck-secrets
+                  key: POSTGRES_PASSWORD
+            - name: DATABASE_URL
+              value: postgresql://bondcheck:$(POSTGRES_PASSWORD)@postgres:5432/bondcheck
+            - name: ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: bondcheck-secrets
+                  key: ADMIN_TOKEN
+            - name: CRON_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bondcheck-secrets
+                  key: CRON_SECRET
+            - name: ANTHROPIC_API_KEY      # empty -> offline rule engine
+              valueFrom:
+                secretKeyRef:
+                  name: bondcheck-secrets
+                  key: ANTHROPIC_API_KEY
+                  optional: true
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: bondcheck-secrets
+                  key: RESEND_API_KEY
+                  optional: true
+          resources:
+            requests:
+              cpu: 250m
+              memory: 384Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+          # Startup can take a while (Claude key check, schema check), so liveness waits for it.
+          startupProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 2
+            failureThreshold: 60
+          livenessProbe:            # process is alive (no DB call: a DB outage must not restart pods)
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:           # take traffic only while the database answers
+            httpGet:
+              path: /ready
+              port: http
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 2
+          lifecycle:
+            preStop:                # let the gateway drop this endpoint before SIGTERM stops new work
+              exec:
+                command: ["sleep", "5"]
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bondcheck-api
+  labels:
+    app.kubernetes.io/name: bondcheck-api
+    app.kubernetes.io/component: api
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: bondcheck-api
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
+---
+# Autoscale on CPU: agent runs (PDF parsing, OCR, redaction, extraction) are CPU-bound in offline mode.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: bondcheck-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: bondcheck-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Pods
+          value: 3
+          periodSeconds: 30
+    scaleDown:
+      stabilizationWindowSeconds: 180   # don't flap; paused uploads live in pod memory
+      policies:
+        - type: Pods
+          value: 1
+          periodSeconds: 60
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bondcheck-api
+spec:
+  maxUnavailable: 1                     # node drains/upgrades evict one API pod at a time
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bondcheck-api

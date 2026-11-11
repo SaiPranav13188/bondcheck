@@ -22,7 +22,7 @@ from core.config import ROOT, settings
 JSON_COLUMNS = {"aliases", "other_risky_clauses", "values_seen", "steps"}
 BOOL_COLUMNS = {"has_bond", "training_cost_recovery", "certificates_retained", "alert_all"}
 READONLY_TABLES = {"company_summary", "offer_records", "evidence", "conflicts"}
-APP_TABLES = ["alerts_sent", "data_requests", "agent_runs", "subscriptions", "users", "placement_drives",
+APP_TABLES = ["upload_owners", "alerts_sent", "data_requests", "agent_runs", "subscriptions", "users", "placement_drives",
               "moderation_queue", "conflicts", "evidence", "offer_records", "companies"]
 
 _lock = threading.RLock()
@@ -197,6 +197,9 @@ def init_db(reset: bool = False) -> None:
         check_connection()
         schema = (ROOT / "db" / "schema.sql").read_text(encoding="utf-8")
         with connect() as c:
+            # Several API pods (plus the migrate Job) may start at once: serialise schema changes
+            # with a transaction-scoped advisory lock so concurrent CREATE ... IF NOT EXISTS can't race.
+            c.execute("SELECT pg_advisory_xact_lock(712026)")
             invalidate_company_cache()
             if reset:  # only BondCheck's own objects; never the whole schema (Supabase keeps grants there)
                 c.execute("DROP VIEW IF EXISTS company_summary")

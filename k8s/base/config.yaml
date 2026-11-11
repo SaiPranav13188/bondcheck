@@ -1,0 +1,17 @@
+# Non-secret settings shared by the API pods and the migrate Job. Secrets come from the overlay's
+# secretGenerator (bondcheck-secrets).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bondcheck-config
+data:
+  PORT: "8000"
+  DB_POOL_SIZE: "5"
+  BONDCHECK_FAST_MODEL: claude-haiku-4-5
+  BONDCHECK_STRONG_MODEL: claude-sonnet-5-5
+  BONDCHECK_TOKEN_BUDGET: "80000"
+  BONDCHECK_MAX_RETRIES: "2"
+  BONDCHECK_CONFIDENCE_THRESHOLD: "0.75"
+  SITE_URL: http://localhost:8080
+  CORS_ORIGINS: http://localhost:8080
+  ALERT_FROM_EMAIL: BondCheck <alerts@bondcheck.dev>

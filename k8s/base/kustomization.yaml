@@ -1,0 +1,19 @@
+# BondCheck on Kubernetes: shared base. Deploy an overlay, not this directory:
+#   kubectl apply -k k8s/overlays/local        (in-cluster PostgreSQL)
+#   kubectl apply -k k8s/overlays/external-db  (Supabase / Neon)
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bondcheck
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: bondcheck
+    includeSelectors: false
+resources:
+  - namespace.yaml
+  - config.yaml
+  - postgres.yaml
+  - api.yaml
+  - frontend.yaml
+  - jobs.yaml
+  - gateway.yaml
+  - network-policy.yaml

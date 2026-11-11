@@ -6,6 +6,9 @@ Cron:    /cron/monitor, /cron/alerts  (Authorization: Bearer CRON_SECRET, as sen
 
 Upload and ask stream NDJSON: one JSON event per line while the agents work, then a final
 {"kind": "result", ...} line.
+
+Probes:  /health (liveness: the process is up), /ready (readiness: the database answers).
+Every response carries `X-Served-By: <pod name>` so load balancing across replicas is visible.
 """
 from __future__ import annotations
 
@@ -22,13 +25,14 @@ from datetime import date, timedelta
 from statistics import median
 from typing import Iterator
 
-from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Query, UploadFile
+import httpx
+from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, EmailStr, Field
 
 from agents import alert, monitor, orchestrator, qa
-from core import runlog
+from core import cluster, runlog
 from core.config import ROOT, settings
 from core.runlog import RunContext
 from tools import database as db
@@ -60,7 +64,15 @@ app = FastAPI(title="BondCheck API", version="1.0.0", lifespan=lifespan,
               description="Agentic AI platform for job-bond transparency. Not legal advice.")
 app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins + ["http://127.0.0.1:3000"],
                    allow_origin_regex=settings.cors_origin_regex or None,
-                   allow_credentials=False, allow_methods=["*"], allow_headers=["*"])
+                   allow_credentials=False, allow_methods=["*"], allow_headers=["*"],
+                   expose_headers=["X-Served-By"])
+
+
+@app.middleware("http")
+async def served_by(request: Request, call_next):
+    response = await call_next(request)
+    response.headers["X-Served-By"] = cluster.INSTANCE
+    return response
 
 MAX_UPLOAD_BYTES = 10 * 1024 * 1024
 SAMPLES_DIR = ROOT / "data" / "samples"
@@ -198,11 +210,22 @@ def company_card(c: dict, recs: list[dict], drives: dict, conflicts: Counter, pu
 
 @app.get("/health")
 def health() -> dict:
-    return {"ok": True, "mode": "offline-rules" if settings.offline else "claude",
+    return {"ok": True, "instance": cluster.INSTANCE, "mode": "offline-rules" if settings.offline else "claude",
             "note": getattr(settings, "offline_reason", None),
             "models": None if settings.offline else {"fast": settings.fast_model, "strong": settings.strong_model},
             "database": "postgres" if settings.use_postgres else "sqlite",
             "ocr": "tesseract" if settings.tesseract_available else ("claude-vision" if not settings.offline else "none")}
+
+
+@app.get("/ready")
+def ready():
+    """Readiness probe: only receive traffic while the database is reachable."""
+    try:
+        db.query_one("SELECT 1 AS ok")
+    except Exception as e:  # noqa: BLE001
+        log.warning("not ready: %s", type(e).__name__)
+        return JSONResponse({"ready": False, "instance": cluster.INSTANCE}, status_code=503)
+    return {"ready": True, "instance": cluster.INSTANCE}
 
 
 @app.get("/stats")
@@ -337,8 +360,43 @@ class ConfirmBody(BaseModel):
     answers: dict[str, str | int | bool | None]
 
 
+def _forward_confirm(target: str, upload_id: str, body: ConfirmBody):
+    """Relay a confirmation to the replica holding the paused upload and stream its reply back."""
+    client = httpx.Client(timeout=httpx.Timeout(10.0, read=330.0))
+    try:
+        req = client.build_request("POST", f"{target}/upload/{upload_id}/confirm", json=body.model_dump(),
+                                   headers={cluster.FORWARDED_HEADER: cluster.INSTANCE})
+        upstream = client.send(req, stream=True)
+    except httpx.TransportError:
+        client.close()
+        cluster.release(upload_id)  # the owner pod is gone, and its in-memory checkpoint with it
+        raise HTTPException(404, "this upload is not waiting for confirmation (it may have expired)")
+    if upstream.status_code != 200:
+        content = upstream.read()
+        upstream.close()
+        client.close()
+        return JSONResponse(json.loads(content or b"{}"), status_code=upstream.status_code)
+    log.info("forwarded confirmation of %s to %s", upload_id, target)
+
+    def relay() -> Iterator[bytes]:
+        try:
+            yield from upstream.iter_bytes()  # decoded: the relay doesn't pass on Content-Encoding
+        finally:
+            upstream.close()
+            client.close()
+
+    return StreamingResponse(relay(), media_type="application/x-ndjson",
+                             headers={"X-Upload-Owner": upstream.headers.get("x-served-by", "")})
+
+
 @app.post("/upload/{upload_id}/confirm")
-def confirm(upload_id: str, body: ConfirmBody):
+def confirm(upload_id: str, body: ConfirmBody,
+            x_bondcheck_forwarded_by: str = Header(default="")):
+    if not x_bondcheck_forwarded_by and not orchestrator.is_waiting(upload_id):
+        # Another replica may hold this upload's in-memory checkpoint: hand the request to it.
+        target = cluster.owner_url(upload_id)
+        if target and target != cluster.self_url():
+            return _forward_confirm(target, upload_id, body)
     try:
         ctx = orchestrator.resume_upload(upload_id, {k: v for k, v in body.answers.items() if v is not None})
     except KeyError as e:

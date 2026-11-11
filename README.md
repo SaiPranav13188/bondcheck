@@ -8,6 +8,7 @@ Seven specialised agents turn anonymously uploaded offer letters into a verified
 |---|---|
 | **Agents** | Orchestrator · Privacy · Extraction · Verification · Q&A · Monitor · Alert |
 | **Stack** | LangGraph · Claude API (Haiku + Sonnet) · FastAPI · PostgreSQL / SQLite · Next.js 16 + Tailwind 4 + Framer Motion |
+| **Runs on** | Kubernetes (load-balanced API replicas, autoscaling, Gateway API), or Vercel + Render. See [k8s/README.md](k8s/README.md). |
 | **Runs without an API key** | Yes. A deterministic offline engine drives the same agent graph, so everything works locally out of the box. |
 
 All demo companies and people are fictional. BondCheck shows information reported in uploaded documents and public sources. It is not legal advice.
@@ -42,7 +43,7 @@ Moderator console: `http://localhost:3000/admin` (local token: `dev-admin-token`
 **Tests and evaluation:**
 
 ```bash
-pytest -q                         # 35 tests: tools, agents, guardrails, API
+pytest -q                         # 42 tests: tools, agents, guardrails, API, multi-replica forwarding
 python -m eval.run_eval           # writes eval/results.json + eval/report.md (shown on /how-it-works)
 ```
 
@@ -124,10 +125,15 @@ bondcheck/
 │                    /subscribe, /samples, /admin/*, /cron/*
 ├── db/              schema.sql (PostgreSQL) · schema_sqlite.sql · seed.py → seed.sql
 ├── eval/            letters.py (synthetic generator) · synthetic_letters/ · ground_truth.json · run_eval.py
+├── core/cluster.py  pod identity + forwarding a paused upload's confirmation to the replica that holds it
 ├── tests/           pytest suite
+├── k8s/             Kubernetes: base manifests, overlays (local, external-db), kind config — see k8s/README.md
+├── scripts/         k8s-up.sh / k8s-forward.sh / k8s-down.sh, loadtest.py (requests per pod, latency)
 ├── frontend/        Next.js app: home, companies, company page, upload (live agent run), ask, drives, how-it-works, admin
 ├── .github/workflows/agents-cron.yml   daily Monitor + Alert (alternative to Vercel Cron)
-└── Dockerfile       API image (includes Tesseract)
+├── .github/workflows/k8s.yml           validate manifests, deploy to a 3-node kind cluster, load test, publish images
+├── Dockerfile       API image (includes Tesseract, runs as non-root)
+└── frontend/Dockerfile   Next.js standalone image for Kubernetes
 ```
 
 Additions beyond the design doc's schema: `moderation_queue.note`, `users.alert_all`, `agent_runs.run_ref`, and the `data_requests` and `alerts_sent` tables, which the Monitor and Alert agents need. `company_summary` also exposes `company_id`.
@@ -146,11 +152,14 @@ Additions beyond the design doc's schema: `moderation_queue.note`, `users.alert_
 
 ## Deployment
 
+- **Kubernetes:** `scripts/k8s-up.sh` builds both images and deploys the full stack to a local 3-node kind cluster: 3–10 autoscaled API replicas behind an Envoy Gateway (least-request load balancing), Next.js ×2, PostgreSQL StatefulSet, migration Job, agent CronJobs, NetworkPolicies and PodDisruptionBudgets. `python scripts/loadtest.py` shows requests spreading across the pods. Details and design notes: [k8s/README.md](k8s/README.md).
 - **Frontend:** deploy `frontend/` to Vercel. Set `NEXT_PUBLIC_API_URL` and `CRON_SECRET`; `vercel.json` schedules the Monitor and Alert agents daily through `/api/cron/[job]`.
 - **API:** `docker build -t bondcheck-api .` and run on Render, Railway, Fly.io or Cloud Run with `DATABASE_URL`, `ANTHROPIC_API_KEY`, `ADMIN_TOKEN`, `CRON_SECRET`, `RESEND_API_KEY`, `CORS_ORIGINS`. Alternatively use the GitHub Actions cron in `.github/workflows`.
-- **Pause/resume note:** uploads waiting for confirmation live in an in-memory LangGraph checkpointer, so documents never touch disk. Run a single API instance, or swap in a shared checkpointer that stores only redacted text.
+- **Pause/resume note:** uploads waiting for confirmation live in an in-memory LangGraph checkpointer, so documents never touch disk. With several replicas (Kubernetes), the pod that pauses an upload records itself as the owner, and any other replica forwards the confirmation to it (`core/cluster.py`). On platforms without pod-to-pod networking, run a single API instance.
 
 ## Resume line
+
+> Deployed it on Kubernetes as a horizontally scaled service: 3–10 autoscaled FastAPI replicas behind a Gateway API / Envoy load balancer (least-request), PostgreSQL StatefulSet, migration Job and agent CronJobs, with zero-downtime rolling updates, readiness-gated traffic and NetworkPolicies. Kept a privacy-preserving human-in-the-loop pause working across replicas via pod-to-pod request forwarding instead of persisting documents. CI deploys to a 3-node kind cluster and load-tests that traffic is balanced across pods.
 
 > Built a multi-agent system (LangGraph, Claude API, FastAPI, PostgreSQL, Next.js) in which 7 specialised agents redact personal data, extract offer-letter terms with quote-verified self-checking, detect conflicting reports, answer questions with cited SQL-backed answers, and proactively alert students before placement drives. The agentic extraction loop improved field accuracy from 88.5% to 99.6% over single-pass extraction and cut hallucinated fields from 22 to 0, with a 0% PII leak rate across 50 synthetic test documents.
 
