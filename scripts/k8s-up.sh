@@ -62,7 +62,17 @@ kubectl -n "$NS" rollout status statefulset/postgres --timeout=5m
 kubectl -n "$NS" wait job/bondcheck-migrate --for=condition=Complete --timeout=20m
 kubectl -n "$NS" rollout status deployment/bondcheck-api --timeout=10m
 kubectl -n "$NS" rollout status deployment/bondcheck-frontend --timeout=10m
-kubectl -n "$NS" wait gateway/bondcheck --for=condition=Programmed --timeout=5m
+# Wait for the routes to be accepted and Envoy's proxy pods to be up. (Not the Gateway's own Programmed
+# condition: that also needs an external load-balancer IP, which kind/minikube never assign.)
+kubectl -n "$NS" wait httproute/bondcheck-api httproute/bondcheck-frontend \
+  --for=jsonpath='{.status.parents[0].conditions[?(@.type=="Accepted")].status}'=True --timeout=5m
+for i in $(seq 1 60); do
+  kubectl -n envoy-gateway-system get deploy -l gateway.envoyproxy.io/owning-gateway-name=bondcheck \
+    -o name 2>/dev/null | grep -q . && break
+  sleep 2
+done
+kubectl -n envoy-gateway-system wait deploy -l gateway.envoyproxy.io/owning-gateway-name=bondcheck \
+  --for=condition=Available --timeout=5m
 
 kubectl -n "$NS" get pods -o wide
 echo
