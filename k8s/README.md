@@ -20,10 +20,13 @@ You need [Docker Desktop](https://www.docker.com/products/docker-desktop/), [kin
 
 ```bash
 cd bondcheck
-scripts/k8s-up.sh          # Git Bash on Windows; creates the cluster, builds, deploys, port-forwards
+scripts/k8s-up.sh          # Git Bash on Windows; creates the cluster, builds, deploys
 ```
 
-Open <http://localhost:8080>. In a second terminal:
+Open <http://localhost:8080>. The gateway is reached directly: Envoy runs as a NodePort (30080,
+[k8s/cluster/envoyproxy.yaml](cluster/envoyproxy.yaml)) that kind maps to `localhost:8080`
+([k8s/kind-config.yaml](kind-config.yaml)), so no `kubectl port-forward` sits in the path and the
+site stays up while Docker Desktop runs. Then:
 
 ```bash
 python scripts/loadtest.py                         # 400 requests: see them spread over the API pods

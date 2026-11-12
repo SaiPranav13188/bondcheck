@@ -2,9 +2,9 @@
 # Bring up BondCheck on a local multi-node Kubernetes cluster (kind), end to end:
 #   kind cluster (1 control plane + 2 workers) -> metrics-server (for the HPA) -> Envoy Gateway
 #   -> build + load images -> apply k8s/overlays/local -> wait for migrate/seed + rollouts
-#   -> port-forward the gateway to http://localhost:8080
+#   -> gateway on http://localhost:8080 (Envoy NodePort 30080, mapped to the host by kind)
 #
-# Needs: docker, kind, kubectl, helm.   Usage: scripts/k8s-up.sh [--no-forward]
+# Needs: docker, kind, kubectl, helm.   Usage: scripts/k8s-up.sh
 # Works from Git Bash on Windows, macOS and Linux.
 set -euo pipefail
 
@@ -12,7 +12,6 @@ CLUSTER=bondcheck
 NS=bondcheck
 ENVOY_GATEWAY_VERSION=v1.9.3
 METRICS_SERVER_CHART_VERSION=3.12.2
-LOCAL_PORT=${LOCAL_PORT:-8080}
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"
 
@@ -78,7 +77,20 @@ kubectl -n "$NS" get pods -o wide
 echo
 kubectl -n "$NS" get hpa
 
-if [ "${1:-}" = "--no-forward" ]; then exit 0; fi
-step "Open http://localhost:$LOCAL_PORT  (API: http://localhost:$LOCAL_PORT/backend/health)  -- Ctrl+C to stop"
-echo "In another terminal:  python scripts/loadtest.py      # see requests spread over the API pods"
+step "Gateway"
+for i in $(seq 1 30); do
+  curl -fsS -o /dev/null -m 5 http://localhost:8080/backend/ready && break
+  sleep 2
+done
+if curl -fsS -o /dev/null -m 5 http://localhost:8080/backend/ready; then
+  echo "BondCheck is up:  http://localhost:8080   (API: http://localhost:8080/backend/health)"
+  echo "It keeps running while Docker Desktop runs; you can close this terminal."
+  echo "Load test:  python scripts/loadtest.py      Stop:  scripts/k8s-down.sh"
+  exit 0
+fi
+# A cluster created before the port mapping was added to k8s/kind-config.yaml has no route from
+# the host to the NodePort. Recreate it (scripts/k8s-down.sh && scripts/k8s-up.sh), or tunnel:
+echo "localhost:8080 is not mapped into this cluster (it predates k8s/kind-config.yaml's port mapping)."
+[ -z "${CI:-}" ] || exit 1
+echo "Recreate it for direct access: scripts/k8s-down.sh && scripts/k8s-up.sh. Falling back to kubectl port-forward."
 exec "$ROOT/scripts/k8s-forward.sh"

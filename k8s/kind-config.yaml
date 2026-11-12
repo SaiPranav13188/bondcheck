@@ -1,9 +1,16 @@
 # Local multi-node cluster: 1 control plane + 2 workers, so API replicas really spread across nodes.
 #   kind create cluster --config k8s/kind-config.yaml
+# The Envoy gateway is a NodePort (30080, see k8s/cluster/envoyproxy.yaml); kind maps it to
+# http://localhost:8080 on the host, so traffic reaches Envoy directly, with no kubectl port-forward.
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: bondcheck
 nodes:
   - role: control-plane
+    extraPortMappings:
+      - containerPort: 30080
+        hostPort: 8080
+        listenAddress: "127.0.0.1"
+        protocol: TCP
   - role: worker
   - role: worker
