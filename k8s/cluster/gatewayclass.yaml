@@ -1,8 +1,13 @@
-# Cluster-scoped: binds the "bondcheck-envoy" class to the Envoy Gateway controller.
-# Applied by scripts/k8s-up.sh right after Envoy Gateway is installed.
+# Cluster-scoped: binds the "bondcheck-envoy" class to the Envoy Gateway controller, with the
+# proxy settings in envoyproxy.yaml. Applied by scripts/k8s-up.sh right after Envoy Gateway is installed.
 apiVersion: gateway.networking.k8s.io/v1
 kind: GatewayClass
 metadata:
   name: bondcheck-envoy
 spec:
   controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: bondcheck-proxy
+    namespace: envoy-gateway-system

@@ -13,11 +13,15 @@ jobs:
     steps:
       - name: Monitor Agent
         if: github.event.schedule != '45 2 * * *'
-        run: curl -fsS -X POST "$API_URL/cron/monitor" -H "Authorization: Bearer $CRON_SECRET"
+        run: |
+          if [ -z "$API_URL" ]; then echo "API_URL secret not set (Vercel Cron runs the agents); skipping"; exit 0; fi
+          curl -fsS -X POST "$API_URL/cron/monitor" -H "Authorization: Bearer $CRON_SECRET"
         env: { API_URL: "${{ secrets.API_URL }}", CRON_SECRET: "${{ secrets.CRON_SECRET }}" }
       - name: Alert Agent
         if: github.event.schedule != '30 2 * * *'
-        run: curl -fsS -X POST "$API_URL/cron/alerts" -H "Authorization: Bearer $CRON_SECRET"
+        run: |
+          if [ -z "$API_URL" ]; then echo "API_URL secret not set (Vercel Cron runs the agents); skipping"; exit 0; fi
+          curl -fsS -X POST "$API_URL/cron/alerts" -H "Authorization: Bearer $CRON_SECRET"
         env: { API_URL: "${{ secrets.API_URL }}", CRON_SECRET: "${{ secrets.CRON_SECRET }}" }
 
   tests:

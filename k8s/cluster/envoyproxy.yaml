@@ -1,0 +1,22 @@
+# How Envoy Gateway runs the proxy for the bondcheck-envoy class: a NodePort Service on a fixed
+# port (30080), which kind maps to localhost:8080 (k8s/kind-config.yaml). kind has no cloud load
+# balancer; on a managed cluster drop this and the Gateway gets a LoadBalancer IP instead.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: bondcheck-proxy
+  namespace: envoy-gateway-system
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: NodePort
+        externalTrafficPolicy: Cluster
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              ports:
+                - port: 80
+                  nodePort: 30080
